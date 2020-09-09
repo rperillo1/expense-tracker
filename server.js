@@ -9,6 +9,7 @@ var logger = require('morgan');
 
 
 const indexRouter = require('./routes/index');
+const homeRouter = require('./routes/home');
 
 var app = express();
 
@@ -34,7 +35,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', indexRouter)
+app.use('/', indexRouter);
+app.use('/home', homeRouter);
 
 
 app.use(function (req, res, next) {
