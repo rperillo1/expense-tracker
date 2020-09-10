@@ -4,27 +4,29 @@ const passport = require('passport');
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.redirect('/');
+router.get('/', function (req, res, next) {
+    res.redirect('/home');
 });
 
 
 router.get('/auth/google',
+  console.log('**auth/google'),
   passport.authenticate('google', {
-    scope: ['profile', 'email']
-  })
+        scope: ['profile', 'email']
+    })
 );
 
 router.get('/oauth2callback',
-  passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/'
-  })
+    passport.authenticate('google', {
+        successRedirect: '/home',
+        failureRedirect: '/fail'
+    })
 );
 
 router.get('/logout', function (req, res) {
-  req.logout();
-  res.redirect('/');
+    console.log('**/logout'),
+    req.logout();
+    res.redirect('/logout');
 });
 
 module.exports = router;
