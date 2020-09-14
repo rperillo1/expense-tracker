@@ -11,10 +11,12 @@ const clientId =
 function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-    const login = (res) => {
-        userServices.PostData(res).then((result) => {
+    const login = res => {
+        console.log('RES', res.profileObj)
+        userServices.PostData(res.profileObj)
+        .then((result) => {
             let responseJSON = result;
-            if (responseJSON.userData) {
+            if (responseJSON) {
                 sessionStorage.setItem('userData', JSON.stringify(responseJSON));
                 setIsLoggedIn(true);
             }

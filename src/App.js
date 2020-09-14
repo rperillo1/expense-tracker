@@ -13,11 +13,11 @@ function App() {
         <br/> */}
         <Link to="/logout">Log Out</Link>
         <br/>
-        <Link to='/login'>Log in Page</Link>
+        <Link to='/loginPage'>Log in Page</Link>
       </header>
       <main>
         <Switch>
-          <Route exact path='/login' render={({ history }) =>
+          <Route exact path='/loginPage' render={({ history }) =>
             <LoginPage history={history} />
           } />
           <Route exact path='/logout' render={({ history }) =>

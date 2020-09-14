@@ -1,6 +1,6 @@
 //OAUTH
 const express = require('express');
-const session = require('express-session');
+// const session = require('express-session');
 // const passport = require('passport');
 const createError = require('http-errors');
 const path = require('path');
@@ -13,10 +13,10 @@ const app = express();
 
 require('dotenv').config();
 require('./config/database');
-require('./config/passport');
+// require('./config/passport');
 
 
-const userRouter = require('./routes/user');
+const userRouter = require('./routes/users');
 const homeRouter = require('./routes/home');
 
 //mounting middleware
@@ -30,11 +30,11 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(session({
-    secret: 'expenseTRACKER',
-    resave: false,
-    saveUninitialized: true
-}));
+// app.use(session({
+//     secret: 'expenseTRACKER',
+//     resave: false,
+//     saveUninitialized: true
+// }));
 
 
 // OAUTH
@@ -42,7 +42,8 @@ app.use(session({
 // app.use(passport.session());
 
 // Routes
-app.use('/', userRouter);
+app.use('/api/users', userRouter);
+// app.use(require('./config/auth'));
 app.use('/home', homeRouter);
 
 

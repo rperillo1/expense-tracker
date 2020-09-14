@@ -4,7 +4,7 @@ var userCtrl = require('../controllers/user');
 
 
 
-router.get('/', userCtrl.index);
+// router.get('/', userCtrl.index);
 
 
 // function isLoggedIn(req, res, next) {
