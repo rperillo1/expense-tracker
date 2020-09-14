@@ -1,11 +1,13 @@
 //OAUTH
 const express = require('express');
 const session = require('express-session');
-const passport = require('passport');
+// const passport = require('passport');
 const createError = require('http-errors');
 const path = require('path');
 const logger = require('morgan');
-// const cookieParser = require('cookie-parser');
+const favicon = require('serve-favicon');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -14,7 +16,7 @@ require('./config/database');
 require('./config/passport');
 
 
-const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
 const homeRouter = require('./routes/home');
 
 //mounting middleware
@@ -24,8 +26,9 @@ app.use(express.json());
 // Serve from the build folder
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
-// app.use(cookieParser());
-
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({
     secret: 'expenseTRACKER',
@@ -35,11 +38,11 @@ app.use(session({
 
 
 // OAUTH
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Routes
-app.use('/', indexRouter);
+app.use('/', userRouter);
 app.use('/home', homeRouter);
 
 
