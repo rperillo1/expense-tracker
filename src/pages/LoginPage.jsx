@@ -5,8 +5,8 @@ import userServices from '../utils/userServices'
 // refresh token
 // import { refreshTokenSetup } from '../utils/refreshToken';
 
-const clientId =
-    '742998896262-rce3fctlgmuekqe0ekud1d8aglnsoreg.apps.googleusercontent.com';
+
+const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
 
 function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -16,6 +16,7 @@ function LoginPage() {
         userServices.PostData(res.profileObj)
         .then((result) => {
             let responseJSON = result;
+            console.log(responseJSON)
             if (responseJSON) {
                 sessionStorage.setItem('userData', JSON.stringify(responseJSON));
                 setIsLoggedIn(true);
@@ -25,20 +26,15 @@ function LoginPage() {
 
 
     const onSuccess = (res) => {
-        console.log('Login Success: currentUser:', res);
-        alert(
-            `Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
-        );
+        console.log('Login Success: currentUser:', res.profileObj.name);
         login(res);
         // refreshTokenSetup(res);
     };
 
     const onFailure = (res) => {
         console.log('Login failed: res:', res);
-        alert(
-            `Failed to login. 😢 Please ping this to repo owner twitter.com/sivanesh_fiz`
-        );
     };
+
 
     return (
         <div>

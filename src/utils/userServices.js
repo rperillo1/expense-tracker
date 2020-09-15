@@ -14,7 +14,13 @@ function PostData(userData) {
     //MISSING - SET TOKEN (DONT NEED?)
 }
 
+function fetchClientId() {
+    console.log('client id - backend', process.env.GOOGLE_CLIENT_ID)
+    return process.env.GOOGLE_CLIENT_ID
+}
+
 
 export default {
     PostData,
+    fetchClientId
 }
