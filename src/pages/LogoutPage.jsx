@@ -7,7 +7,6 @@ const clientId =
 function LogoutPage() {
   const onSuccess = () => {
     console.log('Logout made successfully');
-    alert('Logout made successfully ✌');
   };
 
   return (
