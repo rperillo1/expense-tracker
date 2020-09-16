@@ -9,8 +9,6 @@ function App() {
     <div className="App">
       <header>
         <p>Expense Tracker</p>
-        {/* <Link to="/auth/google">Login with Google</Link>
-        <br/> */}
         <Link to="/logout">Log Out</Link>
         <br/>
         <Link to='/loginPage'>Log in Page</Link>
