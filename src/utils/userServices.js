@@ -5,7 +5,7 @@ function PostData(userData) {
     return fetch(BASE_URL + 'login', {
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(userData.profileObj)
+        body: JSON.stringify(userData)
     })
     .then(res => {
         console.log('res in postdata', res)
@@ -16,7 +16,7 @@ function PostData(userData) {
 }
 
 function AuthenticateGoogleUser(userData) {
-    console.log('userData', userData)
+    // console.log('userData', userData)
     return fetch(BASE_URL + 'authenticate', {
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
@@ -24,10 +24,13 @@ function AuthenticateGoogleUser(userData) {
     })
     .then(res => {
         if (res.ok) return res.json();
-        throw new Error('Unsuccessful Login!', res);
+        throw new Error('Bad Credentials!', res);
     })
 }
 
+// function getUser() {
+
+// }
 
 
 export default { 

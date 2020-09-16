@@ -11,7 +11,7 @@ const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
 
 function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState(null)
+    // const [user, setUser] = useState(null)
 
     const login = res => {
         console.log('RES', res)
