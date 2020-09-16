@@ -13,22 +13,22 @@ function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     const login = res => {
-        console.log('RES', res.profileObj)
+        console.log('RES', res)
         userServices.PostData(res.profileObj)
-        .then((result) => {
-            let responseJSON = result;
-            console.log(responseJSON)
-            if (responseJSON) {
-                sessionStorage.setItem('userData', JSON.stringify(responseJSON));
-                setIsLoggedIn(true);
-            }
-        })
-    }
+            .then((result) => {
+                let responseJSON = result;
+                console.log('response JSON', responseJSON)
+                if (responseJSON) {
+                    sessionStorage.setItem('token', JSON.stringify(responseJSON));
+                    setIsLoggedIn(true);
+                }
+            });
+    };
 
 
     const onSuccess = (res) => {
-        console.log('Login Success: currentUser:', res.profileObj.name);
         login(res);
+        console.log('Login Success: currentUser:', res.profileObj.name);
         // refreshTokenSetup(res);
     };
 
@@ -49,11 +49,11 @@ function LoginPage() {
                 style={{ marginTop: '100px' }}
                 isSignedIn={true}
             />
-            { isLoggedIn ? 
-            <h1>You're logged in dawg</h1>    
-            :
-            <h2>Not Logged in</h2>
-        }
+            {isLoggedIn ?
+                <h1>You're logged in dawg</h1>
+                :
+                <h2>Not Logged in</h2>
+            }
         </div>
     );
 }

@@ -8,19 +8,15 @@ function PostData(userData) {
         body: JSON.stringify(userData)
     })
     .then(res => {
+        console.log('res in postdata', res)
         if (res.ok) return res.json();
         throw new Error('Unsuccessful Login!', res);
     })
     //MISSING - SET TOKEN (DONT NEED?)
 }
 
-function fetchClientId() {
-    console.log('client id - backend', process.env.GOOGLE_CLIENT_ID)
-    return process.env.GOOGLE_CLIENT_ID
-}
 
 
-export default {
+export default { 
     PostData,
-    fetchClientId
 }
