@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { GoogleLogout } from 'react-google-login';
 import tokenServices from '../utils/tokenServices'
 
+
 const clientId = '742998896262-rce3fctlgmuekqe0ekud1d8aglnsoreg.apps.googleusercontent.com'
 // const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
+
 
 function LogoutPage() {
     const onSuccess = () => {

@@ -23,10 +23,9 @@ verify().catch(console.error);
 
 
 async function login(req, res) {
-    console.log('hit login')
     console.log('req', req.body)
     try {
-        const user = await User.findOne({ email: req.body.email });
+        const user = await User.findOne({ googleId: req.body.sub });
         if (!user) {
             const user = new User(req.body);
             user.imageUrl = req.body.picture
@@ -34,7 +33,7 @@ async function login(req, res) {
             await user.save();
         }
         // res.json({ user });
-        const token = createJWT(user);
+        const token = createJWT(req.body.sub);
         res.json({ token });
     } catch (err) {
         res.status(400).json(err);

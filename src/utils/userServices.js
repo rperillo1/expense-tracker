@@ -8,7 +8,6 @@ function PostData(userData) {
         body: JSON.stringify(userData)
     })
     .then(res => {
-        console.log('res in postdata', res)
         if (res.ok) return res.json();
         throw new Error('Unsuccessful Login!', res);
     })
@@ -16,7 +15,6 @@ function PostData(userData) {
 }
 
 function AuthenticateGoogleUser(userData) {
-    // console.log('userData', userData)
     return fetch(BASE_URL + 'authenticate', {
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),

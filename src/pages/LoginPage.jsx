@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import userServices from '../utils/userServices'
 
@@ -11,7 +11,15 @@ const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
 
 function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    // const [user, setUser] = useState(null)
+    const [user, setUser] = useState({
+        name: '',
+        email: '',
+        image: '',
+    })
+
+    // useEffect(() => {
+    //     setUser() = userServices.getUser()
+    // })
 
     const login = res => {
         console.log('RES', res)
@@ -24,7 +32,7 @@ function LoginPage() {
                     sessionStorage.setItem('token', JSON.stringify(responseJSON));
                     setIsLoggedIn(true);
                 }
-            });
+            })
     };
 
 
