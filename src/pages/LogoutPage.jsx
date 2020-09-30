@@ -3,7 +3,8 @@ import { GoogleLogout } from 'react-google-login';
 import tokenServices from '../utils/tokenServices'
 
 
-const clientId = '742998896262-rce3fctlgmuekqe0ekud1d8aglnsoreg.apps.googleusercontent.com'
+const clientId = '742998896262-126r6u5gq1d0jvm1sun5r4up65sicqo8.apps.googleusercontent.com'
+
 // const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
 
 

@@ -20,6 +20,7 @@
 
 export default {
     removeToken,
+    getToken
 };
 
 // function getUserFromToken() {
@@ -31,17 +32,18 @@ function removeToken() {
     sessionStorage.removeItem('token');
 }
 
-// function getToken() {
-//     let token = localStorage.getItem('token');
-//     if (token) {
-//         // Check if expired, remove if it is
-//         const payload = JSON.parse(atob(token.split('.')[1]));
-//         if (payload.exp < Date.now() / 1000) {
-//             // token is expired
-//             localStorage.removeItem('token');
-//             token = null;
-//         }
-//     }
-//     return token;
-// }
+function getToken() {
+    let token = sessionStorage.getItem('token');
+    console.log('token from getToken', token)
+    if (token) {
+        // Check if expired, remove if it is
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.exp < Date.now() / 1000) {
+            // token is expired
+            localStorage.removeItem('token');
+            token = null;
+        }
+    }
+    return token;
+}
 

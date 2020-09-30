@@ -1,7 +1,8 @@
+import tokenServices from "./tokenServices";
+
 const BASE_URL = '/api/users/'
 
-function PostData(userData) {
-    console.log('userData', userData)
+function SignupOrLogin(userData) {
     return fetch(BASE_URL + 'login', {
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
@@ -22,16 +23,28 @@ function AuthenticateGoogleUser(userData) {
     })
     .then(res => {
         if (res.ok) return res.json();
-        throw new Error('Bad Credentials!', res);
+        throw new Error('Bad Credentials!');
     })
 }
 
-// function getUser() {
+function getToken() {
+    return tokenServices.getToken()
+}
 
-// }
+function getUserInfo(token) {
+    return fetch(BASE_URL + 'login', {
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+    })
+    .then(res => {
+        if (res.ok) return res.json();
+        throw new Error('Unable To Fetch User Info');
+    })
+}
 
 
 export default { 
-    PostData,
-    AuthenticateGoogleUser
+    SignupOrLogin,
+    AuthenticateGoogleUser,
+    getUserInfo,
+    getToken
 }

@@ -11,27 +11,26 @@ const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
 
 function LoginPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, setUser] = useState({
-        name: '',
-        email: '',
-        image: '',
-    })
+    const [user, setUser] = useState({})
 
     // useEffect(() => {
-    //     setUser() = userServices.getUser()
+    //     if (!user.name) {
+    //         getUser()
+    //     }
     // })
+
+    // const getUser = () => {
+    //     fetch token from sessionStorage and send it as an argument to the below getUserInfo
+    //     return setUser(userServices.getUserInfo())
+    // }
 
     const login = res => {
         console.log('RES', res)
         userServices.AuthenticateGoogleUser(res)
             .then((result) => {
-                let responseJSON = result;
-                console.log('response JSON', responseJSON)
-                if (responseJSON) {
-                    userServices.PostData(responseJSON)
-                    sessionStorage.setItem('token', JSON.stringify(responseJSON));
-                    setIsLoggedIn(true);
-                }
+                sessionStorage.setItem('token', JSON.stringify(result));
+                // getUser();
+                setIsLoggedIn(true);
             })
     };
 
