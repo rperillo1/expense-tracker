@@ -5,6 +5,22 @@ import LogoutPage from './pages/LogoutPage'
 import './App.css';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUser] = useState({})
+
+  const authenticateUser = res => {
+      console.log('RES', res)
+      userServices.AuthenticateGoogleUser(res)
+          .then((result) => {
+              console.log(result)
+              sessionStorage.setItem('token', JSON.stringify(result.token));
+              setUser(result.user);
+              setIsAuthenticated(true);
+          })
+  };
+
+
   return (
     <div className="App">
       <header>

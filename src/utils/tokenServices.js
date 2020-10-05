@@ -20,13 +20,14 @@
 
 export default {
     removeToken,
-    getToken
+    getToken,
+    getIdFromToken
 };
 
-// function getUserFromToken() {
-//     const token = getToken();
-//     return token ? JSON.parse(atob(token.split('.')[1])).user : null;
-// }
+function getIdFromToken() {
+    const token = getToken();
+    return token ? JSON.parse(atob(token.split('.')[1])).user : null;
+}
 
 function removeToken() {
     sessionStorage.removeItem('token');
@@ -38,6 +39,7 @@ function getToken() {
     if (token) {
         // Check if expired, remove if it is
         const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('payload exp', payload.exp)
         if (payload.exp < Date.now() / 1000) {
             // token is expired
             localStorage.removeItem('token');

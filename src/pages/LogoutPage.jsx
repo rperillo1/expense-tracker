@@ -14,12 +14,17 @@ function LogoutPage() {
         console.log('Logout made successfully');
     };
 
+    const onFailure = () => {
+        console.log('yao failed to logout')
+    }
+
     return (
         <div>
             <GoogleLogout
                 clientId={clientId}
                 buttonText="Logout"
                 onLogoutSuccess={onSuccess}
+                onFailure={onFailure}
             ></GoogleLogout>
         </div>
     );

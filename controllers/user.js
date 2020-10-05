@@ -7,6 +7,7 @@ const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
 
 async function verify(req, res) {
+    let userObj = {}
     const token = req.body.tokenObj.id_token
     // console.log('hitting verify - token', token)
     const ticket = await client.verifyIdToken({
@@ -14,57 +15,55 @@ async function verify(req, res) {
         audience: process.env.REACT_APP_GOOGLE_CLIENT_ID,
         // Specify the CLIENT_ID of the app that accesses the backend
     });
-    console.log('ticket', ticket.payload)
     const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    // res.json(payload);
-    let _token = await login(payload);
-    console.log('token from login', _token)
-    res.json(_token);
+    payload.googleId = payload.sub
+    payload.profileObj = {}
+    payload.profileObj.email = payload.email
+    payload.profileObj.name = payload.name
+    payload.profileObj.imageUrl = payload.picture
+    console.log('payload', payload)
+    let user = await loginUser(payload);
+    let _token = createJWT(payload.sub);
+    userObj.token = _token;
+    userObj.user = user
+    res.json(userObj);
 }
 verify().catch(console.error);
 
 
-async function login(payload) {
-    console.log('payload', payload)
-    try {
-        const user = await User.findOne({ googleId: payload.sub });
-        if (!user) {
-            const user = new User();
-            user.imageUrl = payload.picture;
-            user.googleId = payload.sub;
-            user.email = payload.email;
-            user.name = payload.name;
-            await user.save();
-        }
-        const token = createJWT(payload.sub);
-        return token;
-    } catch (err) {
-        return(err);
-    }
-}
-
 // async function login(req, res) {
-//     // console.log('req', req.body)
+//     console.log('req.baby', req.body)
 //     try {
-//         const user = await User.findOne({ googleId: req.body.sub });
+//         const user = await User.findOne({ googleId: req.body.googleId});
 //         if (!user) {
 //             const user = new User(req.body);
-//             user.imageUrl = req.body.picture
-//             user.googleId = req.body.sub
+//             user.imageUrl = req.body.profileObj.imageUrl;
+//             user.email = req.body.profileObj.email;
+//             user.name = req.body.profileObj.name;
 //             await user.save();
 //         }
-//         const token = createJWT(req.body.sub);
-//         res.json({ token });
+//         res.json(user);
 //     } catch (err) {
 //         res.status(400).json(err);
 //     }
 // }
 
-async function getUser(req, res) {
-    console.log('req from getUser', req.body)
-    // user.findOne with req.body, which should have the token attached to it.
+async function loginUser(payload) {
+    try {
+        const user = await User.findOne({ googleId: payload.googleId});
+        if (!user) {
+            const user = new User(payload);
+            user.imageUrl = payload.profileObj.imageUrl;
+            user.email = payload.profileObj.email;
+            user.name = payload.profileObj.name;
+            await user.save();
+        }
+        return user;
+    } catch (err) {
+        res.status(400).json(err);
+    }
 }
+
 
 
 // Helper Function
@@ -78,7 +77,5 @@ function createJWT(user) {
 
 
 module.exports = {
-    login,
     verifyUser: verify,
-    getUser
 }

@@ -1,19 +1,8 @@
 import tokenServices from "./tokenServices";
+// import user from "../../models/user";
 
 const BASE_URL = '/api/users/'
 
-function SignupOrLogin(userData) {
-    return fetch(BASE_URL + 'login', {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(userData)
-    })
-    .then(res => {
-        if (res.ok) return res.json();
-        throw new Error('Unsuccessful Login!', res);
-    })
-    //MISSING - SET TOKEN (DONT NEED?)
-}
 
 function AuthenticateGoogleUser(userData) {
     return fetch(BASE_URL + 'authenticate', {
@@ -27,24 +16,30 @@ function AuthenticateGoogleUser(userData) {
     })
 }
 
-function getToken() {
-    return tokenServices.getToken()
-}
-
-function getUserInfo(token) {
+function SignupOrLogin(userData) {
     return fetch(BASE_URL + 'login', {
+        method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(userData)
     })
     .then(res => {
         if (res.ok) return res.json();
-        throw new Error('Unable To Fetch User Info');
+        throw new Error('Unsuccessful Login!', res);
     })
+}
+
+async function getUser(userData) {
+    let googleId = await tokenServices.getIdFromToken()
+    let user;
+    if (googleId) {
+        user = await SignupOrLogin(userData)
+    }
+    console.log('user', user)
+    return user;
 }
 
 
 export default { 
-    SignupOrLogin,
     AuthenticateGoogleUser,
-    getUserInfo,
-    getToken
+    getUser
 }
