@@ -14,8 +14,8 @@ function LogoutPage() {
 
     const onSuccess = () => {
         tokenServices.removeToken()
-        console.log('Logout made successfully');
         setUser({});
+        console.log('Logout made successfully');
     };
 
     const onFailure = () => {

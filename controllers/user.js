@@ -21,9 +21,10 @@ async function verify(req, res) {
     payload.profileObj.email = payload.email
     payload.profileObj.name = payload.name
     payload.profileObj.imageUrl = payload.picture
+    payload.profileObj.googleId = payload.sub
     console.log('payload', payload)
     let user = await loginUser(payload);
-    let _token = createJWT(payload.sub);
+    let _token = createJWT(payload.profileObj);
     userObj.token = _token;
     userObj.user = user
     res.json(userObj);
@@ -43,7 +44,7 @@ async function loginUser(payload) {
         }
         return user;
     } catch (err) {
-        res.status(400).json(err);
+        console.log(err)
     }
 }
 
@@ -61,4 +62,5 @@ function createJWT(user) {
 
 module.exports = {
     verifyUser: verify,
+    loginUser
 }

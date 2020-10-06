@@ -10,36 +10,31 @@ function AuthenticateGoogleUser(userData) {
         headers: new Headers({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(userData)
     })
-    .then(res => {
-        if (res.ok) return res.json();
-        throw new Error('Bad Credentials!');
-    })
+        .then(res => {
+            if (res.ok) return res.json();
+            throw new Error('Bad Credentials!');
+        })
 }
 
-function SignupOrLogin(userData) {
-    return fetch(BASE_URL + 'login', {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(userData)
-    })
-    .then(res => {
-        if (res.ok) return res.json();
-        throw new Error('Unsuccessful Login!', res);
-    })
-}
+// function SignupOrLogin(userData) {
+//     return fetch(BASE_URL + 'login', {
+//         method: 'POST',
+//         headers: new Headers({ 'Content-Type': 'application/json' }),
+//         body: JSON.stringify(userData)
+//     })
+//         .then(res => {
+//             if (res.ok) return res.json();
+//             throw new Error('Unsuccessful Login!', res);
+//         })
+// }
 
-async function getUser(userData) {
-    let googleId = await tokenServices.getIdFromToken()
-    let user;
-    if (googleId) {
-        user = await SignupOrLogin(userData)
-    }
-    console.log('user', user)
+async function getUser() {
+    let user = await tokenServices.getUserFromToken()
     return user;
 }
 
 
-export default { 
+export default {
     AuthenticateGoogleUser,
     getUser
 }

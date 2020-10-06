@@ -4,6 +4,7 @@ const usersCtrl = require('../controllers/user');
 
 
 router.post('/authenticate', usersCtrl.verifyUser);
+router.post('/login', usersCtrl.loginUser);
 
 
 module.exports = router;
