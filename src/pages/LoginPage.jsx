@@ -12,22 +12,6 @@ import { GoogleLogout } from 'react-google-login';
 const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
 
 function LoginPage({ authenticateUser }) {
-    // const [isLoggedIn, setIsLoggedIn] = useState(false)
-    // const [isAuthenticated, setIsAuthenticated] = useState(false)
-    // const { user, setUser } = useContext(UserContext);
-
-
-    // const authenticateUser = res => {
-    //     console.log('RES', res)
-    //     userServices.AuthenticateGoogleUser(res)
-    //         .then((result) => {
-    //             console.log(result)
-    //             sessionStorage.setItem('token', JSON.stringify(result.token));
-    //             setUser(result.user);
-    //             setIsAuthenticated(true);
-    //             setIsLoggedIn(true);
-    //         })
-    // };
 
 
     const onSuccess = (res) => {
@@ -54,11 +38,6 @@ function LoginPage({ authenticateUser }) {
                 style={{ marginTop: '100px' }}
                 isSignedIn={true}
             />
-            {/* {isAuthenticated ?
-                <h1>You're logged in dawg</h1>
-                :
-                <h2>Not Logged in</h2>
-            } */}
         </div>
     );
 }

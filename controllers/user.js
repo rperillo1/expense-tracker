@@ -31,23 +31,6 @@ async function verify(req, res) {
 verify().catch(console.error);
 
 
-// async function login(req, res) {
-//     console.log('req.baby', req.body)
-//     try {
-//         const user = await User.findOne({ googleId: req.body.googleId});
-//         if (!user) {
-//             const user = new User(req.body);
-//             user.imageUrl = req.body.profileObj.imageUrl;
-//             user.email = req.body.profileObj.email;
-//             user.name = req.body.profileObj.name;
-//             await user.save();
-//         }
-//         res.json(user);
-//     } catch (err) {
-//         res.status(400).json(err);
-//     }
-// }
-
 async function loginUser(payload) {
     try {
         const user = await User.findOne({ googleId: payload.googleId});

@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 export const UserContext = createContext();
 
 
-function UserProvider(props) {
+export function UserProvider(props) {
     const [user, setUser] = useState({});
 
     return (
@@ -14,5 +14,4 @@ function UserProvider(props) {
 }
   
 
-export default UserProvider;
 
