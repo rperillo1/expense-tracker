@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { GoogleLogout } from 'react-google-login';
-// import userServices from '../utils/userServices'
-// import tokenServices from '../utils/tokenServices'
-// import { UserContext } from "../contexts/UserContext";
 
 // refresh token
 // import { refreshTokenSetup } from '../utils/tokenServices';

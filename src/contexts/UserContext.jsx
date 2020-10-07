@@ -4,9 +4,10 @@ export const UserContext = createContext();
 
 export function UserProvider(props) {
     const [user, setUser] = useState({});
+    const [isloggedIn, setIsLoggedIn] = useState(false);
 
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ userCtx: [user, setUser], isloggedCtx: [isloggedIn, setIsLoggedIn] }}>
             {props.children}
         </UserContext.Provider>
     );

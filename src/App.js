@@ -7,17 +7,20 @@ import { UserContext } from "./contexts/UserContext";
 import './App.css';
 
 function App() {
-  const { user, setUser } = useContext(UserContext);
+  const { userCtx, isloggedCtx } = useContext(UserContext);
+  const [ user, setUser ] = userCtx;
+  const [ isloggedIn, setIsLoggedIn ] = isloggedCtx;
 
   useEffect(() => {
-    if (Object.keys(user).length === 0) {
+    if (!isloggedIn) {
       setUser(getUser());
     }
-  }, [user])
+  }, [])
 
 
   const getUser = async () => {
     let user = await userServices.getUser();
+    setIsLoggedIn(true);
     return user;
   }
 
@@ -28,16 +31,17 @@ function App() {
       .then((result) => {
         sessionStorage.setItem('token', JSON.stringify(result.token));
         setUser(result.user);
+        setIsLoggedIn(true);
       })
   };
 
-  
+
   return (
     <div className="App">
       <header>
         <p>Expense Tracker</p>
 
-        { Object.keys(user).length === 0 ?
+        { !isloggedIn ?
           <Link to='/login'>Log in Page</Link>
           :
           <Link to="/logout">Log Out</Link>
@@ -46,15 +50,12 @@ function App() {
       </header>
       <main>
         <Switch>
-
             <Route exact path='/login' render={({ history }) =>
               <LoginPage history={history} authenticateUser={authenticateUser} />
             } />
-            
             <Route exact path='/logout' render={({ history }) =>
               <LogoutPage history={history} />
-            } />
-          
+            } />  
         </Switch>
       </main>
     </div>

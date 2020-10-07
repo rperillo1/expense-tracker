@@ -10,16 +10,19 @@ const clientId = '742998896262-126r6u5gq1d0jvm1sun5r4up65sicqo8.apps.googleuserc
 
 
 function LogoutPage() {
-    const { user, setUser } = useContext(UserContext);
+    const { userCtx, isloggedCtx } = useContext(UserContext);
+    const [ user, setUser ] = userCtx;
+    const [ isloggedIn, setIsLoggedIn ] = isloggedCtx;
 
     const onSuccess = () => {
         tokenServices.removeToken()
         setUser({});
+        setIsLoggedIn(false);
         console.log('Logout made successfully');
     };
 
     const onFailure = () => {
-        console.log('yao failed to logout')
+        console.log('Failed to logout')
     }
 
     return (
@@ -30,6 +33,7 @@ function LogoutPage() {
                 onLogoutSuccess={onSuccess}
                 onFailure={onFailure}
             ></GoogleLogout>
+            <h1>{user.name}</h1>
         </div>
     );
 
