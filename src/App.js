@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
@@ -11,18 +11,14 @@ function App() {
 
 
   useEffect(() => {
-    console.log('before')
     if (Object.keys(user).length === 0) {
       getUser();
     }
-    console.log('after')
   }, [])
 
 
   const getUser = async () => {
-    console.log('this')
     let user = await userServices.getUser();
-    console.log('that')
     setUser(user);
   }
 
@@ -33,7 +29,6 @@ function App() {
       .then((result) => {
         sessionStorage.setItem('token', JSON.stringify(result.token));
         setUser(result.user);
-        // setIsLoggedIn(true);
       })
   };
 

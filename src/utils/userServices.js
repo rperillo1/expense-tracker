@@ -31,7 +31,11 @@ function AuthenticateGoogleUser(userData) {
 async function getUser() {
     let user = await tokenServices.getUserFromToken()
     console.log('user dawg', user)
-    return user;
+    if (user) {    
+        return user;
+    } else {
+        return {};
+    }
 }
 
 
