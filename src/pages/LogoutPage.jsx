@@ -8,13 +8,12 @@ const clientId = `${process.env.REACT_APP_GOOGLE_CLIENT_ID}`
 
 
 function LogoutPage() {
-    const { userCtx, isLoggedCtx } = useContext(UserContext);
-    const [ user, setUser ] = userCtx;
-    const [ isLoggedIn, setIsLoggedIn ] = isLoggedCtx;
+    const { user, setUser } = useContext(UserContext);
+
 
     const onSuccess = () => {
         tokenServices.removeToken()
-        setUser(null);
+        setUser({});
         // setIsLoggedIn(false);
         console.log('Logout made successfully');
     };

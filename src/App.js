@@ -7,20 +7,23 @@ import { UserContext } from "./contexts/UserContext";
 import './App.css';
 
 function App() {
-  const { userCtx, isLoggedCtx } = useContext(UserContext);
-  const [user, setUser] = userCtx;
-  const [isLoggedIn, setIsLoggedIn] = isLoggedCtx;
+  const { user, setUser } = useContext(UserContext);
+
 
   useEffect(() => {
-    // if (!isloggedIn) {
-      setUser(getUser());
-    // }
+    console.log('before')
+    if (Object.keys(user).length === 0) {
+      getUser();
+    }
+    console.log('after')
   }, [])
 
 
   const getUser = async () => {
+    console.log('this')
     let user = await userServices.getUser();
-    return user;
+    console.log('that')
+    setUser(user);
   }
 
 
@@ -40,7 +43,7 @@ function App() {
       <header>
         <p>Expense Tracker</p>
 
-        {!user ?
+        {Object.keys(user).length === 0 ?
           <Link to='/login'>Log in Page</Link>
           :
           <Link to="/logout">Log Out</Link>
