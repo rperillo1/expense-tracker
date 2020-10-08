@@ -6,7 +6,7 @@ import { GoogleLogout } from 'react-google-login';
 // import { refreshTokenSetup } from '../utils/tokenServices';
 
 
-const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
+const clientId = `${process.env.REACT_APP_GOOGLE_CLIENT_ID}`
 
 function LoginPage({ authenticateUser }) {
 
@@ -33,7 +33,7 @@ function LoginPage({ authenticateUser }) {
                 cookiePolicy={'single_host_origin'}
                 responseType='token'
                 style={{ marginTop: '100px' }}
-                isSignedIn={true}
+                // isSignedIn={true}
             />
         </div>
     );

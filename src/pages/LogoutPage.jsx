@@ -4,20 +4,20 @@ import tokenServices from '../utils/tokenServices';
 import { UserContext } from "../contexts/UserContext";
 
 
-const clientId = '742998896262-126r6u5gq1d0jvm1sun5r4up65sicqo8.apps.googleusercontent.com'
+// const clientId = '742998896262-126r6u5gq1d0jvm1sun5r4up65sicqo8.apps.googleusercontent.com'
 
-// const clientId = `'${process.env.REACT_APP_GOOGLE_CLIENT_ID}'`
+const clientId = `${process.env.REACT_APP_GOOGLE_CLIENT_ID}`
 
 
 function LogoutPage() {
-    const { userCtx, isloggedCtx } = useContext(UserContext);
+    const { userCtx, isLoggedCtx } = useContext(UserContext);
     const [ user, setUser ] = userCtx;
-    const [ isloggedIn, setIsLoggedIn ] = isloggedCtx;
+    const [ isLoggedIn, setIsLoggedIn ] = isLoggedCtx;
 
     const onSuccess = () => {
         tokenServices.removeToken()
-        setUser({});
-        setIsLoggedIn(false);
+        setUser(null);
+        // setIsLoggedIn(false);
         console.log('Logout made successfully');
     };
 
@@ -33,7 +33,7 @@ function LogoutPage() {
                 onLogoutSuccess={onSuccess}
                 onFailure={onFailure}
             ></GoogleLogout>
-            <h1>{user.name}</h1>
+            {/* <h1>{user.name}</h1> */}
         </div>
     );
 

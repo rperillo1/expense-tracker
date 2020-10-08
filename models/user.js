@@ -7,7 +7,6 @@ let userSchema = new Schema({
   email: String,
   googleId: String,
   imageUrl: String,
-  //accounts reference
   accounts: [{
     type: Schema.Types.ObjectId,
     ref: 'Account'
@@ -16,7 +15,6 @@ let userSchema = new Schema({
   timestamps: true
 });
 
-//User model should have an accounts reference
 
 
 module.exports = mongoose.model('User', userSchema);
