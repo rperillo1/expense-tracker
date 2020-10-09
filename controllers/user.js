@@ -48,6 +48,16 @@ async function loginUser(payload) {
     }
 }
 
+async function getUser(req, res) {
+    console.log(req.params)
+    try {
+        const user = await User.find({googleId: req.params.googleId});
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
 
 
 // Helper Function
@@ -62,5 +72,6 @@ function createJWT(user) {
 
 module.exports = {
     verifyUser: verify,
-    loginUser
+    loginUser,
+    getUser
 }

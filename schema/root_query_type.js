@@ -11,7 +11,7 @@ const {
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: {
-        // _id: { type: GraphQLString },
+        _id: { type: GraphQLString },
         name: { type: GraphQLString },
         email: { type: GraphQLString },
         googleId: { type: GraphQLString },
@@ -28,8 +28,9 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args: { googleId: { type: GraphQLString } },
             resolve(parentValue, args) {
-                return axios.get(`http://localhost:3001/api/users/`)
-                .then(response => console.log('response', response))
+                return axios.get(`http://localhost:3001/api/users/${args.googleId}`)
+                // .then(response => console.log(response.data))
+                .then(response => response.data[0])
             }
         }
     }
