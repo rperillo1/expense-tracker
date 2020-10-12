@@ -1,5 +1,6 @@
 import React from 'react';
 import { GoogleLogin } from 'react-google-login';
+import UserList from '../components/UserList';
 
 
 // refresh token
@@ -35,6 +36,7 @@ function LoginPage({ authenticateUser }) {
                 style={{ marginTop: '100px' }}
                 // isSignedIn={true}
             />
+            <UserList></UserList>
         </div>
     );
 }

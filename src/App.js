@@ -5,6 +5,7 @@ import LogoutPage from './pages/LogoutPage'
 import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
 import './App.css';
+import UserList from './components/UserList';
 
 function App() {
   const { user, setUser } = useContext(UserContext);

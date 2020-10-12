@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 // GraphQL
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/schema');
+const cors = require('cors');
 
 const app = express();
 
@@ -29,8 +30,9 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
-// Routes
+// Routes 
 app.use('/api/users', userRouter);
 // app.use(require('./config/auth'));
 // app.use('/home', homeRouter);
