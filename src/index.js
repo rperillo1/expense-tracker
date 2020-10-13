@@ -17,15 +17,15 @@ const client = new ApolloClient({
 });
 
 ReactDOM.render(
-  <Router>
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-    <UserProvider>
-    <App />
-    </UserProvider>
-    </ApolloProvider>
-  </React.StrictMode>
-  </Router>,
+  <ApolloProvider client={client}>
+    <Router>
+      <React.StrictMode>
+        <UserProvider>
+          <App />
+        </UserProvider>
+      </React.StrictMode>
+    </Router>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 

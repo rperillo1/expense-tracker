@@ -48,6 +48,7 @@ async function loginUser(payload) {
     }
 }
 
+// GraphQL test function
 async function getUser(req, res) {
     console.log(req.params)
     try {

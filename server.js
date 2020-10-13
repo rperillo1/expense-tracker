@@ -9,63 +9,105 @@ const bodyParser = require('body-parser');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./schema/schema');
 const cors = require('cors');
-
-const app = express();
+const connectMongo = require('./mongo-connector');
 
 require('dotenv').config();
 require('./config/database');
 
+const start = async () => {
 
-const userRouter = require('./routes/users');
-const homeRouter = require('./routes/home');
+    const mongo = await connectMongo();
+    const app = express();
+    app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+    app.use(express.static(path.join(__dirname, 'build')));
+    app.use(cookieParser());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(cors());
 
-//mounting middleware
-app.use(logger('dev'));
-app.use(express.json());
+    app.use('/graphql', bodyParser.json(), graphqlHTTP({
+        context: { mongo },
+        schema,
+        graphiql: true
+    }));
+    // app.use('/graphiql', graphiqlExpress({
+    //     endpointURL: '/graphql',
+    // }));
+
+    app.use(function (req, res, next) {
+        next(createError(404));
+    });
+
+    app.use(function (err, req, res, next) {
+        res.locals.message = err.message;
+        res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+        res.status(err.status || 500);
+        res.json('error');
+    });
+
+    const PORT = process.env.PORT || 3001;
+    app.listen(PORT, () => {
+        console.log(`GraphQL server running on port ${PORT}.`)
+    });
+};
+
+start();
+
+// const app = express();
+
+// require('dotenv').config();
+// require('./config/database');
 
 
-// Serve from the build folder
-app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
-app.use(express.static(path.join(__dirname, 'build')));
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
-
-// Routes 
-app.use('/api/users', userRouter);
-// app.use(require('./config/auth'));
-// app.use('/home', homeRouter);
-app.use('/graphql', graphqlHTTP({
-    schema,
-    graphiql: true
-}));
+// const userRouter = require('./routes/users');
 
 
-// Catch all route
-// app.get('/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// })
+// //mounting middleware
+// app.use(logger('dev'));
+// app.use(express.json());
 
 
-app.use(function (req, res, next) {
-    next(createError(404));
-});
+// // Serve from the build folder
+// app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
+// app.use(express.static(path.join(__dirname, 'build')));
+// app.use(cookieParser());
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(cors());
 
-app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+// // Routes 
+// app.use('/api/users', userRouter);
+// // app.use(require('./config/auth'));
+// app.use('/graphql', graphqlHTTP({
+//     schema,
+//     graphiql: true
+// }));
 
-    // render the error page
-    res.status(err.status || 500);
-    res.json('error');
-});
 
-const port = process.env.PORT || 3001;
+// // Catch all route
+// // app.get('/*', (req, res) => {
+// //     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// // })
 
-app.listen(port, () => {
-    console.log(`Express app running on port ${port}`)
-});
 
-// module.exports = app;
+// app.use(function (req, res, next) {
+//     next(createError(404));
+// });
+
+// app.use(function (err, req, res, next) {
+//     // set locals, only providing error in development
+//     res.locals.message = err.message;
+//     res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+//     // render the error page
+//     res.status(err.status || 500);
+//     res.json('error');
+// });
+
+// const port = process.env.PORT || 3001;
+
+// app.listen(port, () => {
+//     console.log(`Express app running on port ${port}`)
+// });
+

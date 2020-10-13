@@ -1,5 +1,6 @@
 const axios = require('axios')
 const graphql = require('graphql');
+const Users = require('../mongo-connector');
 
 const {
     GraphQLObjectType,
@@ -41,8 +42,6 @@ const AccountType = new GraphQLObjectType({
     })
 });
 
-
-
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -50,7 +49,8 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args: { googleId: { type: GraphQLString } },
             resolve(parentValue, args) {
-                return axios.get(`http://localhost:3001/api/users/${args.googleId}`)
+                return axios.get(`http://localhost:3001/graphql/users/${args.googleId}`)
+                    .then(response => console.log(response))
                     .then(response => response.data[0])
             }
         },

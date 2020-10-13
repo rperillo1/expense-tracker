@@ -4,7 +4,7 @@ const usersCtrl = require('../controllers/user');
 
 
 router.post('/authenticate', usersCtrl.verifyUser);
-router.get('/:googleId', usersCtrl.getUser);
+router.get('/:googleId', usersCtrl.getUser); 
 // router.post('/login', usersCtrl.loginUser);
 
 
