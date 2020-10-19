@@ -17,6 +17,7 @@ require('./config/database');
 const start = async () => {
 
     const mongo = await connectMongo();
+    // console.log(await mongo.Users.findOne({googleId: "115017414006295624552"}));
     const app = express();
     app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
     app.use(express.static(path.join(__dirname, 'build')));

@@ -1,6 +1,9 @@
 const axios = require('axios')
 const graphql = require('graphql');
-const Users = require('../mongo-connector');
+const connectMongo = require('../mongo-connector');
+// const mongo = connectMongo();
+
+
 
 const {
     GraphQLObjectType,
@@ -48,10 +51,11 @@ const RootQuery = new GraphQLObjectType({
         user: {
             type: UserType,
             args: { googleId: { type: GraphQLString } },
-            resolve(parentValue, args) {
-                return axios.get(`http://localhost:3001/graphql/users/${args.googleId}`)
-                    .then(response => console.log(response))
-                    .then(response => response.data[0])
+            async resolve(parentValue, args, request) {
+                const mongo = await connectMongo();
+                return await mongo.Users.findOne({googleId: args.googleId})
+                    // .then(response => console.log(response))
+                    .then(response => response)
             }
         },
         // accounts: {
