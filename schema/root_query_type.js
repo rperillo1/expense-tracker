@@ -51,10 +51,8 @@ const RootQuery = new GraphQLObjectType({
         user: {
             type: UserType,
             args: { googleId: { type: GraphQLString } },
-            async resolve(parentValue, args, request) {
-                const mongo = await connectMongo();
-                return await mongo.Users.findOne({googleId: args.googleId})
-                    // .then(response => console.log(response))
+            async resolve(parentValue, args, context, request) {
+                return context.mongo.Users.findOne({googleId: args.googleId})
                     .then(response => response)
             }
         },
