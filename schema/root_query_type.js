@@ -1,6 +1,7 @@
 const axios = require('axios')
 const graphql = require('graphql');
-const connectMongo = require('../mongo-connector');
+const UserType = require('./types/user_type');
+// const connectMongo = require('../mongo-connector');
 // const mongo = connectMongo();
 
 
@@ -14,24 +15,6 @@ const {
     GraphQLList
 } = graphql;
 
-
-const UserType = new GraphQLObjectType({
-    name: 'User',
-    fields: () => ({
-        _id: { type: GraphQLString },
-        name: { type: GraphQLString },
-        email: { type: GraphQLString },
-        googleId: { type: GraphQLString },
-        imageUrl: { type: GraphQLString },
-        //accounts - graphQL Object??!?!?
-        // accounts: {
-        // type: new GraphQLList(AccountType)
-        // resolve(parentValue, args) {
-        // axios.get(companies/{parentValue.id}/accounts) <-- example
-        // }
-        // }
-    })
-});
 
 const AccountType = new GraphQLObjectType({
     name: 'Account',
@@ -51,7 +34,7 @@ const RootQuery = new GraphQLObjectType({
         user: {
             type: UserType,
             args: { googleId: { type: GraphQLString } },
-            async resolve(parentValue, args, context, request) {
+            resolve(parentValue, args, context, request) {
                 return context.mongo.Users.findOne({googleId: args.googleId})
                     .then(response => response)
             }
@@ -68,29 +51,6 @@ const RootQuery = new GraphQLObjectType({
 });
 
 
-// const mutation = new GraphQLObjectType({
-//     name: 'Mutation',
-//     fields: {
-//         addUser: {
-//             type: UserType,
-//             args: {
-//                 name: { type: new GraphQLNonNull(GraphQLString) },
-//                 email: { type: new GraphQLNonNull(GraphQLString) },
-//                 googleId: { type: new GraphQLNonNull(GraphQLString) },
-//                 imageUrl: { type: new GraphQLNonNull(GraphQLString) }
-//             },
-//             resolve(parentValue, { name, email, googleId, imageUrl }) {
-//                 return axios.post('http://localhost:3000/users', { name, email, googleId, imageUrl })
-//                 .then(res => res.data);
-//             }
-//         }
-//     }
-// });
-
-
 module.exports = RootQuery;
 
-// module.exports = new GraphQLSchema({
-//     RootQuery: RootQuery,
-//     mutation
-// });
+

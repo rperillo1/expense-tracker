@@ -49,15 +49,15 @@ async function loginUser(payload) {
 }
 
 // GraphQL test function
-async function getUser(req, res) {
-    console.log(req.params)
-    try {
-        const user = await User.find({googleId: req.params.googleId});
-        res.status(200).json(user);
-    } catch (err) {
-        res.status(500).json(err)
-    }
-}
+// async function getUser(req, res) {
+//     console.log(req.params)
+//     try {
+//         const user = await User.find({googleId: req.params.googleId});
+//         res.status(200).json(user);
+//     } catch (err) {
+//         res.status(500).json(err)
+//     }
+// }
 
 
 
