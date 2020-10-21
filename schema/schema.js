@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const RootQueryType = require('./root_query_type');
+const RootQueryType = require('./types/root_query_type');
 const mutation = require('./mutations');
 
 const {

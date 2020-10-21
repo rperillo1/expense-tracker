@@ -7,9 +7,9 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 // GraphQL
 const { graphqlHTTP } = require('express-graphql');
+const connectMongo = require('./mongo-connector');
 const schema = require('./schema/schema');
 const cors = require('cors');
-const connectMongo = require('./mongo-connector');
 
 require('dotenv').config();
 require('./config/database');
@@ -18,6 +18,9 @@ const start = async () => {
 
     const mongo = await connectMongo();
     const app = express();
+
+    const userRouter = require('./routes/users');
+
     app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
     app.use(express.static(path.join(__dirname, 'build')));
     app.use(cookieParser());
@@ -25,6 +28,7 @@ const start = async () => {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cors());
 
+    app.use('/api/users', userRouter);
     app.use('/graphql', bodyParser.json(), graphqlHTTP({
         context: { mongo },
         schema,
@@ -56,11 +60,8 @@ start();
 
 // const app = express();
 
-// require('dotenv').config();
-// require('./config/database');
 
-
-// const userRouter = require('./routes/users');
+// // const userRouter = require('./routes/users');
 
 
 // //mounting middleware
@@ -77,9 +78,10 @@ start();
 // app.use(cors());
 
 // // Routes 
-// app.use('/api/users', userRouter);
+// // app.use('/api/users', userRouter);
 // // app.use(require('./config/auth'));
-// app.use('/graphql', graphqlHTTP({
+// app.use('/graphql', bodyParser.json(), graphqlHTTP({
+//     context: { mongo },
 //     schema,
 //     graphiql: true
 // }));

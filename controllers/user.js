@@ -29,7 +29,7 @@ async function verify(req, res) {
     userObj.user = user
     res.json(userObj);
 }
-verify().catch(console.error);
+// verify().catch(console.error);
 
 
 async function loginUser(payload) {
@@ -74,5 +74,4 @@ function createJWT(user) {
 module.exports = {
     verifyUser: verify,
     loginUser,
-    getUser
 }

@@ -1,6 +1,6 @@
 const axios = require('axios')
 const graphql = require('graphql');
-const UserType = require('./types/user_type');
+const UserType = require('./user_type');
 // const connectMongo = require('../mongo-connector');
 // const mongo = connectMongo();
 
