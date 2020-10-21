@@ -9,10 +9,10 @@ const UserType = require('./user_type');
 const {
     GraphQLObjectType,
     GraphQLString,
-    GraphQLInt,
-    GraphQLNonNull,
-    GraphQLSchema,
-    GraphQLList
+    // GraphQLInt,
+    // GraphQLNonNull,
+    // GraphQLSchema,
+    // GraphQLList
 } = graphql;
 
 
@@ -34,7 +34,7 @@ const RootQuery = new GraphQLObjectType({
         user: {
             type: UserType,
             args: { googleId: { type: GraphQLString } },
-            resolve(parentValue, args, context, request) {
+            resolve(parentValue, args, context) {
                 return context.mongo.Users.findOne({googleId: args.googleId})
                     .then(response => response)
             }

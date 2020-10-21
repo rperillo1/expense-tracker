@@ -4,12 +4,16 @@ import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
 import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
+import query from './queries/CurrentUser';
+import { graphql } from 'react-apollo';
 import './App.css';
 import UserList from './components/UserList';
 
-function App() {
-  const { user, setUser } = useContext(UserContext);
 
+
+function App(props) {
+  const { user, setUser } = useContext(UserContext);
+  console.log(props.data)
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -40,27 +44,29 @@ function App() {
         <p>Expense Tracker</p>
 
         {Object.keys(user).length === 0 ?
-          <Link to='/login'>Log in Page</Link>
+          // <Link to='/login'>Log in Page</Link>
+          <LoginPage authenticateUser={authenticateUser} />
           :
-          <Link to="/logout">Log Out</Link>
+          // <Link to="/logout">Log Out</Link>
+          <LogoutPage />
         }
 
       </header>
       <main>
         <Switch>
-          <Route exact path='/login' render={({ history }) =>
+          {/* <Route exact path='/login' render={({ history }) =>
             <LoginPage history={history} authenticateUser={authenticateUser} />
           } />
           <Route exact path='/logout' render={({ history }) =>
             <LogoutPage history={history} />
-          } />
+          } /> */}
         </Switch>
       </main>
     </div>
   );
 }
 
-export default App;
+export default graphql(query)(App);
 
 
 
