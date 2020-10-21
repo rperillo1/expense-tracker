@@ -73,6 +73,5 @@ function createJWT(user) {
 
 module.exports = {
     verifyUser: verify,
-    loginUser,
-    getUser
+    loginUser
 }

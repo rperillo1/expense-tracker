@@ -10,6 +10,11 @@ import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 
+// from Client Side Setup - #88 from tutorial
+// const client = new ApolloClient({
+//   dataIdFromObject: o => o._id 
+// });
+
 
 const client = new ApolloClient({
   link: createHttpLink({ uri: 'http://localhost:3001/graphql' }),

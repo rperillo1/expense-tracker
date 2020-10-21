@@ -1,5 +1,4 @@
 import tokenServices from "./tokenServices";
-// import user from "../../models/user";
 
 const BASE_URL = '/api/users/'
 
