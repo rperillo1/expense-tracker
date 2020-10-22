@@ -6,9 +6,9 @@ const SECRET = process.env.REACT_APP_GOOGLE_SECRET;
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
 
-async function verify(req, res) {
+async function verifyUser(req, res) {
     let userObj = {}
-    const token = req.body.tokenObj.id_token
+    const token = req.id_token
     // console.log('hitting verify - token', token)
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -63,7 +63,7 @@ function createJWT(user) {
 
 
 module.exports = {
-    verifyUser: verify,
+    verifyUser,
     loginUser
 }
 

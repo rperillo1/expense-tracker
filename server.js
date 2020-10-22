@@ -19,7 +19,7 @@ const start = async () => {
     const mongo = await connectMongo();
     const app = express();
 
-    const userRouter = require('./routes/users');
+    // const userRouter = require('./routes/users');
 
     app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
     app.use(express.static(path.join(__dirname, 'build')));
@@ -28,15 +28,12 @@ const start = async () => {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cors());
 
-    app.use('/api/users', userRouter);
+    // app.use('/api/users', userRouter);
     app.use('/graphql', bodyParser.json(), graphqlHTTP({
         context: { mongo },
         schema,
         graphiql: true
     }));
-    // app.use('/graphiql', graphiqlExpress({
-    //     endpointURL: '/graphql',
-    // }));
 
     app.use(function (req, res, next) {
         next(createError(404));

@@ -6,14 +6,41 @@ import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
 import query from './queries/CurrentUser';
 import { graphql } from 'react-apollo';
+import { useMutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import './App.css';
-import UserList from './components/UserList';
 
 
 
 function App(props) {
   const { user, setUser } = useContext(UserContext);
   console.log(props.data)
+
+
+
+  const authGQL = (userInput) => gql`
+    mutation LoginOrSignup($name: ${user.profileObj.name}, $email: ${user.profileObj.email}, $googleId: ${user.googleId}, $imageUrl: ${user.profileObj.imageUrl}, $id_token: ${user.tokenObj.id_token}) {
+          LoginOrSignup(name: $name, email: $email, googleId: $googleId, imageUrl: $imageUrl, id_token: $id_token) {
+      name
+      email
+      googleId
+      imageUrl
+    }
+  }
+`;
+
+
+  // LoginOrSignup(name: "bob", email: "bob@email.com", googleId: "1234", imageUrl: "www.yodododod.com/image", id_token: "123") {
+  //   email
+  // }
+
+
+
+  // const AddChannelWithMutation = graphql(
+  //     addChannelMutation
+  //   )(AddChannel); 
+  // export default AddChannelWithMutation;
+
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -30,11 +57,36 @@ function App(props) {
 
   const authenticateUser = res => {
     console.log('RES', res)
-    userServices.AuthenticateGoogleUser(res)
-      .then((result) => {
-        sessionStorage.setItem('token', JSON.stringify(result.token));
-        setUser(result.user);
-      })
+    // let userInput =
+    // {
+    //   "input": {
+    //     "name": res.profileObj.name,
+    //     "email": res.profileObj.email,
+    //     "googleId": res.googleId,
+    //     "imageUrl": res.profileObj.imageUrl,
+    //     "id_token": res.tokenObj.id_token
+    //   }
+    // }
+
+    
+    gql`
+
+    mutation LoginOrSignup($name: String="${res.profileObj.name}", $email: String="${res.profileObj.email}", $googleId: String="${res.googleId}", $imageUrl: String="${res.profileObj.imageUrl}", $id_token: String="${res.tokenObj.id_token}") {
+          LoginOrSignup(name: $name, email: $email, googleId: $googleId, imageUrl: $imageUrl, tokenId: $tokenId) {
+      name
+      email
+      googleId
+      imageUrl
+    }
+  }
+`
+    // authGQL(userInput);
+
+    // userServices.AuthenticateGoogleUser(res)
+    //   .then((result) => {
+    //     sessionStorage.setItem('token', JSON.stringify(result.token));
+    //     setUser(result.user);
+    //   })
   };
 
 
