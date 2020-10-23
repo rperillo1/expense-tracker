@@ -30,7 +30,7 @@ const mutation = new GraphQLObjectType({
                 email: { type: new GraphQLNonNull(GraphQLString) },
                 googleId: { type: new GraphQLNonNull(GraphQLString) },
                 imageUrl: { type: new GraphQLNonNull(GraphQLString) },
-                id_token: { type: new GraphQLNonNull(GraphQLString) }
+                // id_token: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve(parentValue, { name, email, googleId, imageUrl }, request) {
                 console.log('passed to mutation', name, email)

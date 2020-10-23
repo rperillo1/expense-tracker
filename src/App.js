@@ -4,7 +4,7 @@ import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
 import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
-import query from './queries/CurrentUser';
+import mutation from './queries/SingupOrLoginMutation';
 import { graphql } from 'react-apollo';
 import { useMutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -15,31 +15,8 @@ import './App.css';
 function App(props) {
   const { user, setUser } = useContext(UserContext);
   console.log(props.data)
+  console.log(props.mutate)
 
-
-
-  const authGQL = (userInput) => gql`
-    mutation LoginOrSignup($name: ${user.profileObj.name}, $email: ${user.profileObj.email}, $googleId: ${user.googleId}, $imageUrl: ${user.profileObj.imageUrl}, $id_token: ${user.tokenObj.id_token}) {
-          LoginOrSignup(name: $name, email: $email, googleId: $googleId, imageUrl: $imageUrl, id_token: $id_token) {
-      name
-      email
-      googleId
-      imageUrl
-    }
-  }
-`;
-
-
-  // LoginOrSignup(name: "bob", email: "bob@email.com", googleId: "1234", imageUrl: "www.yodododod.com/image", id_token: "123") {
-  //   email
-  // }
-
-
-
-  // const AddChannelWithMutation = graphql(
-  //     addChannelMutation
-  //   )(AddChannel); 
-  // export default AddChannelWithMutation;
 
 
   useEffect(() => {
@@ -57,30 +34,15 @@ function App(props) {
 
   const authenticateUser = res => {
     console.log('RES', res)
-    // let userInput =
-    // {
-    //   "input": {
-    //     "name": res.profileObj.name,
-    //     "email": res.profileObj.email,
-    //     "googleId": res.googleId,
-    //     "imageUrl": res.profileObj.imageUrl,
-    //     "id_token": res.tokenObj.id_token
-    //   }
-    // }
-
-    
-    gql`
-
-    mutation LoginOrSignup($name: String="${res.profileObj.name}", $email: String="${res.profileObj.email}", $googleId: String="${res.googleId}", $imageUrl: String="${res.profileObj.imageUrl}", $id_token: String="${res.tokenObj.id_token}") {
-          LoginOrSignup(name: $name, email: $email, googleId: $googleId, imageUrl: $imageUrl, tokenId: $tokenId) {
-      name
-      email
-      googleId
-      imageUrl
-    }
-  }
-`
-    // authGQL(userInput);
+    props.mutate({
+      variables: {
+        name: res.profileObj.name,
+        email: res.profileObj.email,
+        googleId: res.googleId,
+        imageUrl: res.profileObj.imageUrl,
+        id_token: res.tokenObj.id_token
+      }
+    })
 
     // userServices.AuthenticateGoogleUser(res)
     //   .then((result) => {
@@ -118,7 +80,7 @@ function App(props) {
   );
 }
 
-export default graphql(query)(App);
+export default graphql(mutation)(App);
 
 
 
