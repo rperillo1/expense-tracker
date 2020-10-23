@@ -9,11 +9,10 @@ const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 async function verifyUser(req, res) {
     let userObj = {}
     const token = req.id_token
-    // console.log('hitting verify - token', token)
+
     const ticket = await client.verifyIdToken({
         idToken: token,
         audience: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-        // Specify the CLIENT_ID of the app that accesses the backend
     });
     const payload = ticket.getPayload();
     payload.googleId = payload.sub
@@ -25,24 +24,24 @@ async function verifyUser(req, res) {
     console.log('payload', payload)
     let user = await loginUser(payload);
     let _token = createJWT(payload.profileObj);
-    userObj.token = _token;
-    userObj.user = user
-    res.json(userObj);
+    // userObj.token = _token;
+    // userObj.user = user
+    return { name: user.name, email: user.email, googleId: user.googleId, imageUrl: user.imageUrl }
 }
 // verify().catch(console.error);
 
 
 async function loginUser(payload) {
     try {
-        const user = await User.findOne({ googleId: payload.googleId});
+        const user = await User.findOne({ googleId: payload.googleId });
         if (!user) {
             const user = new User(payload);
-            // user.imageUrl = payload.profileObj.imageUrl;
-            user.imageUrl = payload.imageUrl;
-            // user.email = payload.profileObj.email;
-            user.email = payload.email;
-            // user.name = payload.profileObj.name;
-            user.name = payload.name;
+            user.imageUrl = payload.profileObj.imageUrl;
+            // user.imageUrl = payload.imageUrl;
+            user.email = payload.profileObj.email;
+            // user.email = payload.email;
+            user.name = payload.profileObj.name;
+            // user.name = payload.name;
             await user.save();
         }
         return user;

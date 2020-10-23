@@ -14,10 +14,6 @@ import './App.css';
 
 function App(props) {
   const { user, setUser } = useContext(UserContext);
-  console.log(props.data)
-  console.log(props.mutate)
-
-
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -43,6 +39,11 @@ function App(props) {
         id_token: res.tokenObj.id_token
       }
     })
+      .then((result) => {
+        console.log('result', result)
+        // sessionStorage.setItem('token', JSON.stringify(result.token));
+        // setUser(result.user);
+      })
 
     // userServices.AuthenticateGoogleUser(res)
     //   .then((result) => {

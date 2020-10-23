@@ -4,17 +4,17 @@ import tokenServices from "./tokenServices";
 const BASE_URL = '/api/users/'
 
 
-function AuthenticateGoogleUser(userData) {
-    return fetch(BASE_URL + 'authenticate', {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(userData)
-    })
-        .then(res => {
-            if (res.ok) return res.json();
-            throw new Error('Bad Credentials!');
-        })
-}
+// function AuthenticateGoogleUser(userData) {
+//     return fetch(BASE_URL + 'authenticate', {
+//         method: 'POST',
+//         headers: new Headers({ 'Content-Type': 'application/json' }),
+//         body: JSON.stringify(userData)
+//     })
+//         .then(res => {
+//             if (res.ok) return res.json();
+//             throw new Error('Bad Credentials!');
+//         })
+// }
 
 // function SignupOrLogin(userData) {
 //     return fetch(BASE_URL + 'login', {
@@ -40,6 +40,6 @@ async function getUser() {
 
 
 export default {
-    AuthenticateGoogleUser,
+    // AuthenticateGoogleUser,
     getUser
 }
