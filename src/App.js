@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
 import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
+import tokenServices from "./utils/tokenServices";
 import mutation from './queries/SingupOrLoginMutation';
 import { graphql } from 'react-apollo';
 import { useMutation } from 'react-apollo';
@@ -40,16 +41,12 @@ function App(props) {
       }
     })
       .then((result) => {
-        console.log('result', result)
+        let data = result.data.LoginOrSignup
+        tokenServices.setToken(result);
         // sessionStorage.setItem('token', JSON.stringify(result.token));
-        // setUser(result.user);
+        let user = {email: data.email, name: data.name, googleId: data.googleId, imageUrl: data.imageUrl}
+        setUser(user);
       })
-
-    // userServices.AuthenticateGoogleUser(res)
-    //   .then((result) => {
-    //     sessionStorage.setItem('token', JSON.stringify(result.token));
-    //     setUser(result.user);
-    //   })
   };
 
 

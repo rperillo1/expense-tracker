@@ -7,7 +7,6 @@ const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
 
 async function verifyUser(req, res) {
-    let userObj = {}
     const token = req.id_token
 
     const ticket = await client.verifyIdToken({
@@ -16,17 +15,10 @@ async function verifyUser(req, res) {
     });
     const payload = ticket.getPayload();
     payload.googleId = payload.sub
-    payload.profileObj = {}
-    payload.profileObj.email = payload.email
-    payload.profileObj.name = payload.name
-    payload.profileObj.imageUrl = payload.picture
-    payload.profileObj.googleId = payload.sub
-    console.log('payload', payload)
+    console.log(payload)
     let user = await loginUser(payload);
-    let _token = createJWT(payload.profileObj);
-    // userObj.token = _token;
-    // userObj.user = user
-    return { name: user.name, email: user.email, googleId: user.googleId, imageUrl: user.imageUrl }
+    let data = { name:user.name, email: user.email, googleId: user.googleId, imageUrl: user.imageUrl}
+    return data;
 }
 // verify().catch(console.error);
 
@@ -36,13 +28,9 @@ async function loginUser(payload) {
         const user = await User.findOne({ googleId: payload.googleId });
         if (!user) {
             const user = new User(payload);
-            user.imageUrl = payload.profileObj.imageUrl;
-            // user.imageUrl = payload.imageUrl;
-            user.email = payload.profileObj.email;
-            // user.email = payload.email;
-            user.name = payload.profileObj.name;
-            // user.name = payload.name;
+            user.imageUrl = payload.picture;
             await user.save();
+            return user;
         }
         return user;
     } catch (err) {

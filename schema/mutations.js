@@ -11,8 +11,7 @@ const {
 } = graphql;
 
 
-// console.log('passed to mutation', name, email)
-// console.log('request in mutation', request)
+
 // return context.mongo.Users.findOne({ googleId: args.googleId })
 //     .then(response => response)
 // logout: {
@@ -30,7 +29,7 @@ const mutation = new GraphQLObjectType({
                 email: { type: new GraphQLNonNull(GraphQLString) },
                 googleId: { type: new GraphQLNonNull(GraphQLString) },
                 imageUrl: { type: new GraphQLNonNull(GraphQLString) },
-                id_token: { type: new GraphQLNonNull(GraphQLString) }
+                id_token: { type: new GraphQLNonNull(GraphQLString) },
             },
             resolve(parentValue, { name, email, googleId, imageUrl, id_token }, request) {
                 return AuthService.verifyUser({ name, email, googleId, imageUrl, id_token, req: request })
