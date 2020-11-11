@@ -4,7 +4,7 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Homepage from './pages/Homepage'
 import AddAccountPage from './pages/AddAccountPage'
-import userServices from './utils/userServices'
+// import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
 import tokenServices from "./utils/tokenServices";
 import mutation from './queries/SingupOrLoginMutation';
@@ -26,7 +26,7 @@ function App(props) {
 
 
   const getUser = async () => {
-    let user = await userServices.getUser();
+    let user = await tokenServices.getUser();
     setUser(user);
   }
 
@@ -62,10 +62,8 @@ function App(props) {
         <p>Expense Tracker</p>
 
         {Object.keys(user).length === 0 ?
-          // <Link to='/login'>Log in Page</Link>
           <Login authenticateUser={authenticateUser} />
           :
-          // <Link to="/logout">Log Out</Link>
           <Logout />
         }
 

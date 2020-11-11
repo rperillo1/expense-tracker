@@ -1,9 +1,10 @@
 const graphql = require('graphql');
-
+const AccountType = require('./account_type');
 
 const {
     GraphQLObjectType,
     GraphQLString,
+    GraphQLList
 } = graphql;
 
 
@@ -15,12 +16,8 @@ const UserType = new GraphQLObjectType({
         email: { type: GraphQLString },
         googleId: { type: GraphQLString },
         imageUrl: { type: GraphQLString },
-        //accounts - graphQL Object??!?!?
         // accounts: {
-        // type: new GraphQLList(AccountType)
-        // resolve(parentValue, args) {
-        // axios.get(companies/{parentValue.id}/accounts) <-- example
-        // }
+        // type: GraphQLList(AccountType)
         // }
     })
 });

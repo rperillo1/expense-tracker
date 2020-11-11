@@ -1,32 +1,14 @@
-const axios = require('axios')
 const graphql = require('graphql');
 const UserType = require('./user_type');
-// const connectMongo = require('../mongo-connector');
-// const mongo = connectMongo();
 
 
 
 const {
     GraphQLObjectType,
     GraphQLString,
-    // GraphQLInt,
-    // GraphQLNonNull,
-    // GraphQLSchema,
-    // GraphQLList
 } = graphql;
 
 
-const AccountType = new GraphQLObjectType({
-    name: 'Account',
-    fields: () => ({
-        // _id: { type: GraphQLString },
-        // name: { type: GraphQLString },
-        // email: { type: GraphQLString },
-        // googleId: { type: GraphQLString },
-        // imageUrl: { type: GraphQLString },
-        //accounts - graphQL Object??!?!?
-    })
-});
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',

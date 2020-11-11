@@ -24,7 +24,8 @@ export default {
     removeToken,
     getToken,
     getUserFromToken,
-    setToken
+    setToken,
+    getUser
 };
 
 function setToken(user) {
@@ -42,6 +43,15 @@ function createJWT(user) {
         SECRET,
         { expiresIn: '24h' }
     );
+}
+
+async function getUser() {
+    let user = await getUserFromToken()
+    if (user) {    
+        return user;
+    } else {
+        return {};
+    }
 }
 
 function getUserFromToken() {
