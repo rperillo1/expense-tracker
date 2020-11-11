@@ -1,5 +1,4 @@
 // mutations allows for delete/update to database
-const axios = require('axios')
 const graphql = require('graphql');
 const UserType = require('./types/user_type');
 const AuthService = require('../config/auth');

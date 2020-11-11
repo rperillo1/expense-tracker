@@ -1,5 +1,3 @@
-import session from 'express-session';
-
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.REACT_APP_GOOGLE_SECRET;
 
@@ -42,7 +40,7 @@ function createJWT(user) {
     return jwt.sign(
         { user },  // data payload
         SECRET,
-        { expiresIn: '3000' }
+        { expiresIn: '24h' }
     );
 }
 

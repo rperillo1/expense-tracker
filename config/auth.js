@@ -1,8 +1,6 @@
 const User = require('../models/user');
 const { OAuth2Client } = require('google-auth-library');
-const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.REACT_APP_GOOGLE_SECRET;
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
 
@@ -38,15 +36,6 @@ async function loginUser(payload) {
     }
 }
 
-
-// Helper Function
-function createJWT(user) {
-    return jwt.sign(
-        { user },  // data payload
-        SECRET,
-        { expiresIn: '24h' }
-    );
-}
 
 
 module.exports = {

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let accountSchema = new Schema({
     balance: Number,
-    income: { amount: Number, frequency: Number },
+    income: { amount: Number, frequency: Array },
     deposits: { amount: Number, note: String, date: Date },
     withdrawals: { amount: Number, note: String, date: Date },
     expenses: {
@@ -13,7 +13,7 @@ let accountSchema = new Schema({
       hoa: { amount: Number, note: String, date: Date },
       gas: { amount: Number, note: String, date: Date },
       restaurants: { amount: Number, note: String, date: Date },
-      animals: { amount: Number, note: String, date: Date },
+      pets: { amount: Number, note: String, date: Date },
       homeImprovement: { amount: Number, note: String, date: Date },
       automobile: { amount: Number, note: String, date: Date },
       medical: { amount: Number, note: String, date: Date },

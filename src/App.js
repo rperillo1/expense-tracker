@@ -7,8 +7,8 @@ import { UserContext } from "./contexts/UserContext";
 import tokenServices from "./utils/tokenServices";
 import mutation from './queries/SingupOrLoginMutation';
 import { graphql } from 'react-apollo';
-import { useMutation } from 'react-apollo';
-import gql from 'graphql-tag';
+// import { useMutation } from 'react-apollo';
+// import gql from 'graphql-tag';
 import './App.css';
 
 

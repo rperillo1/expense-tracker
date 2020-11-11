@@ -14,12 +14,11 @@ function LogoutPage() {
     const onSuccess = () => {
         tokenServices.removeToken()
         setUser({});
-        // setIsLoggedIn(false);
-        console.log('Logout made successfully');
+        alert('logout made successfully')
     };
 
     const onFailure = () => {
-        console.log('Failed to logout')
+        alert('failed to logout');
     }
 
     return (
