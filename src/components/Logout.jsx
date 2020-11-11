@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { GoogleLogout } from 'react-google-login';
 import tokenServices from '../utils/tokenServices';
 import { UserContext } from "../contexts/UserContext";
@@ -23,12 +24,15 @@ function LogoutPage() {
 
     return (
         <div>
-            <GoogleLogout
-                clientId={clientId}
-                buttonText="Logout"
-                onLogoutSuccess={onSuccess}
-                onFailure={onFailure}
-            ></GoogleLogout>
+            <Link to='/'>
+                <GoogleLogout
+                    clientId={clientId}
+                    buttonText="Logout"
+                    onLogoutSuccess={onSuccess}
+                    onFailure={onFailure}
+
+                ></GoogleLogout>
+            </Link>
             {/* <h1>{user.name}</h1> */}
         </div>
     );

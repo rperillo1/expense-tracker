@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import LoginPage from './pages/LoginPage'
-import LogoutPage from './pages/LogoutPage'
+import Login from './components/Login'
+import Logout from './components/Logout'
+import Homepage from './pages/Homepage'
+import AddAccountPage from './pages/AddAccountPage'
 import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
 import tokenServices from "./utils/tokenServices";
@@ -43,11 +45,15 @@ function App(props) {
       .then((result) => {
         let data = result.data.LoginOrSignup
         tokenServices.setToken(result);
-        // sessionStorage.setItem('token', JSON.stringify(result.token));
         let user = {email: data.email, name: data.name, googleId: data.googleId, imageUrl: data.imageUrl}
         setUser(user);
       })
   };
+
+  const createAccount = async accountToCreate => {
+    // await mutation to add account to the user model;
+    console.log(accountToCreate)
+  }
 
 
   return (
@@ -57,21 +63,24 @@ function App(props) {
 
         {Object.keys(user).length === 0 ?
           // <Link to='/login'>Log in Page</Link>
-          <LoginPage authenticateUser={authenticateUser} />
+          <Login authenticateUser={authenticateUser} />
           :
           // <Link to="/logout">Log Out</Link>
-          <LogoutPage />
+          <Logout />
         }
 
       </header>
       <main>
+      {Object.keys(user).length === 0 ? 
+      <div>Please Log In or Sign Up</div>
+      : 
+        <Homepage></Homepage>
+      }
         <Switch>
-          {/* <Route exact path='/login' render={({ history }) =>
-            <LoginPage history={history} authenticateUser={authenticateUser} />
+          <Route exact path='/add-account' render={({ history }) =>
+            <AddAccountPage history={history} createAccount={createAccount}/>
           } />
-          <Route exact path='/logout' render={({ history }) =>
-            <LogoutPage history={history} />
-          } /> */}
+
         </Switch>
       </main>
     </div>
