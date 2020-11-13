@@ -4,12 +4,13 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Homepage from './pages/Homepage'
 import AddAccountPage from './pages/AddAccountPage'
-// import userServices from './utils/userServices'
 import { UserContext } from "./contexts/UserContext";
 import tokenServices from "./utils/tokenServices";
-import mutation from './queries/SingupOrLoginMutation';
-import { graphql } from 'react-apollo';
-// import { useMutation } from 'react-apollo';
+import LoginMutation from './queries/LoginMutation';
+import { useMutation } from 'react-apollo';
+// import mutation from './queries/SingupOrLoginMutation';
+// import { graphql } from 'react-apollo';
+// import { withApollo } from "react-apollo";
 // import gql from 'graphql-tag';
 import './App.css';
 
@@ -17,6 +18,7 @@ import './App.css';
 
 function App(props) {
   const { user, setUser } = useContext(UserContext);
+  const [LoginOrSignup, { data } ] = useMutation(LoginMutation);
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -33,14 +35,17 @@ function App(props) {
 
   const authenticateUser = res => {
     console.log('RES', res)
-    props.mutate({
-      variables: {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        googleId: res.googleId,
-        imageUrl: res.profileObj.imageUrl,
-        id_token: res.tokenObj.id_token
-      }
+    // props.mutate({
+    //   variables: {
+    //     name: res.profileObj.name,
+    //     email: res.profileObj.email,
+    //     googleId: res.googleId,
+    //     imageUrl: res.profileObj.imageUrl,
+    //     id_token: res.tokenObj.id_token
+    //   }
+    // })
+    LoginOrSignup({ 
+      variables: {name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token}
     })
       .then((result) => {
         let data = result.data.LoginOrSignup
@@ -53,7 +58,7 @@ function App(props) {
   const createAccount = async accountToCreate => {
     // await mutation to add account to the user model;
     console.log(accountToCreate)
-  }
+  };
 
 
   return (
@@ -85,7 +90,9 @@ function App(props) {
   );
 }
 
-export default graphql(mutation)(App);
+export default App;
+// export default graphql(mutation)(App);
+
 
 
 

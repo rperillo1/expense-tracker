@@ -14,8 +14,8 @@ const {
 const AccountType = new GraphQLObjectType({
     name: 'Account',
     fields: () => ({
-        balance: GraphQLInt,
-        income: GraphQLObjectType,
+        balance: { type: GraphQLInt },
+        income: { type: GraphQLObjectType },
         expenses: {
             type: ExpensesType
         }
@@ -25,22 +25,22 @@ const AccountType = new GraphQLObjectType({
 const ExpensesType = new GraphQLObjectType({
     name: 'Expenses',
     fields: () => ({
-        bills: GraphQLList,
-        mortgage: GraphQLList,
-        rent: GraphQLList,
-        hoa: GraphQLList,
-        gas: GraphQLList,
-        restaurants: GraphQLList,
-        pets: GraphQLList ,
-        homeImprovement: GraphQLList,
-        automobile: GraphQLList,
-        medical: GraphQLList,
-        groceries: GraphQLList,
-        transportation: GraphQLList,
-        shopping: GraphQLList,
-        entertainment: GraphQLList,
-        personal: GraphQLList,
-        other: GraphQLList 
+        bills: { type: GraphQLList },
+        mortgage: { type: GraphQLList },
+        rent: { type: GraphQLList },
+        hoa: { type: GraphQLList },
+        gas: { type: GraphQLList },
+        restaurants: { type: GraphQLList },
+        pets: { type: GraphQLList },
+        homeImprovement: { type: GraphQLList },
+        automobile: { type: GraphQLList },
+        medical: { type: GraphQLList },
+        groceries: { type: GraphQLList },
+        transportation: { type: GraphQLList },
+        shopping: { type: GraphQLList },
+        entertainment: { type: GraphQLList },
+        personal: { type: GraphQLList },
+        other: { type: GraphQLList }
     })
 });
 

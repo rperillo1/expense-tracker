@@ -13,11 +13,7 @@ const {
 
 // return context.mongo.Users.findOne({ googleId: args.googleId })
 //     .then(response => response)
-// logout: {
-//     type: UserType,
-// rip out token from localStorage
-// return user name or something?
-// }
+
 const mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {

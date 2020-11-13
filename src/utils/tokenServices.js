@@ -37,6 +37,7 @@ function setToken(user) {
     }
 }
 
+// helper function for setToken
 function createJWT(user) {
     return jwt.sign(
         { user },  // data payload
@@ -54,6 +55,7 @@ async function getUser() {
     }
 }
 
+//helper function for getUser
 function getUserFromToken() {
     const token = getToken();
     return token ? JSON.parse(atob(token.split('.')[1])).user : null;
