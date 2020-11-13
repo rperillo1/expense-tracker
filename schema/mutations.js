@@ -2,11 +2,13 @@
 const graphql = require('graphql');
 const UserType = require('./types/user_type');
 const AuthService = require('../config/auth');
+const AccountType = require('./types/account_type');
 
 const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLNonNull,
+    GraphQLInt
 } = graphql;
 
 
@@ -28,6 +30,19 @@ const mutation = new GraphQLObjectType({
             },
             resolve(parentValue, { name, email, googleId, imageUrl, id_token }, request) {
                 return AuthService.verifyUser({ name, email, googleId, imageUrl, id_token, req: request })
+            }
+        },
+        AddAccount: {
+            type: AccountType,
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString)},
+                balance: { type: new GraphQLNonNull(GraphQLInt)},
+            },
+            resolve(parentValue, { name, balance }, request ) {
+                console.log('name', name, 'balance', balance)
+                // return context.mongo.Accounts.create({ name: name, balance: balance })
+                // return name;
+                // hit db and save the fields to the account DB
             }
         }
     }

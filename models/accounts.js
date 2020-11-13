@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let accountSchema = new Schema({
+    name: String,
     balance: Number,
     income: { amount: Number, frequency: Array },
-    // deposits: { amount: Number, note: String, date: Date },
-    // withdrawals: { amount: Number, note: String, date: Date },
     expenses: {
       bills: Array,
       mortgage: Array,

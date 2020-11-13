@@ -7,6 +7,7 @@ import AddAccountPage from './pages/AddAccountPage'
 import { UserContext } from "./contexts/UserContext";
 import tokenServices from "./utils/tokenServices";
 import LoginMutation from './queries/LoginMutation';
+import AddAccountMutation from './queries/AddAccountMutation';
 import { useMutation } from 'react-apollo';
 // import mutation from './queries/SingupOrLoginMutation';
 // import { graphql } from 'react-apollo';
@@ -18,7 +19,8 @@ import './App.css';
 
 function App(props) {
   const { user, setUser } = useContext(UserContext);
-  const [LoginOrSignup, { data } ] = useMutation(LoginMutation);
+  const [LoginOrSignup, { data }] = useMutation(LoginMutation);
+  const [AddAccount, { stuff }] = useMutation(AddAccountMutation)
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -34,23 +36,13 @@ function App(props) {
 
 
   const authenticateUser = res => {
-    console.log('RES', res)
-    // props.mutate({
-    //   variables: {
-    //     name: res.profileObj.name,
-    //     email: res.profileObj.email,
-    //     googleId: res.googleId,
-    //     imageUrl: res.profileObj.imageUrl,
-    //     id_token: res.tokenObj.id_token
-    //   }
-    // })
-    LoginOrSignup({ 
-      variables: {name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token}
+    LoginOrSignup({
+      variables: { name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token }
     })
       .then((result) => {
         let data = result.data.LoginOrSignup
         tokenServices.setToken(result);
-        let user = {email: data.email, name: data.name, googleId: data.googleId, imageUrl: data.imageUrl}
+        let user = { email: data.email, name: data.name, googleId: data.googleId, imageUrl: data.imageUrl }
         setUser(user);
       })
   };
@@ -58,6 +50,12 @@ function App(props) {
   const createAccount = async accountToCreate => {
     // await mutation to add account to the user model;
     console.log(accountToCreate)
+    await AddAccount({
+      variables: { name: accountToCreate.name, balance: accountToCreate.balance }
+    })
+    .then((result) => {
+      console.log(result)
+    });
   };
 
 
@@ -74,14 +72,14 @@ function App(props) {
 
       </header>
       <main>
-      {Object.keys(user).length === 0 ? 
-      <div>Please Log In or Sign Up</div>
-      : 
-        <Homepage></Homepage>
-      }
+        {Object.keys(user).length === 0 ?
+          <div>Please Log In or Sign Up</div>
+          :
+          <Homepage></Homepage>
+        }
         <Switch>
           <Route exact path='/add-account' render={({ history }) =>
-            <AddAccountPage history={history} createAccount={createAccount}/>
+            <AddAccountPage history={history} createAccount={createAccount} />
           } />
 
         </Switch>

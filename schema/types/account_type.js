@@ -14,11 +14,12 @@ const {
 const AccountType = new GraphQLObjectType({
     name: 'Account',
     fields: () => ({
+        name: { type: GraphQLString },
         balance: { type: GraphQLInt },
-        income: { type: GraphQLObjectType },
-        expenses: {
-            type: ExpensesType
-        }
+        // income: { type: GraphQLObjectType },
+        // expenses: {
+        //     type: ExpensesType
+        // }
     })
 });
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import UseFormState from "../hooks/UseFormState"
-
+import UseFormState from "../hooks/UseFormState";
 
 function AddAccountPage({ createAccount }) {
-    const [acctValues, handleChange, reset] = UseFormState({ name: '', balance: 0, income: 0})
+    const [acctValues, handleChange, reset] = UseFormState({ name: '', balance: 0 })
+
 
 
     const handleSubmit = (e) => {
@@ -23,8 +23,8 @@ function AddAccountPage({ createAccount }) {
                 <input type='text' value={acctValues.name} onChange={handleChange} name='name'></input>
                 <label>Starting Balance:</label>
                 <input type='number' value={acctValues.balance} onChange={handleChange} name='balance' placeholder='4200'></input>
-                <label>Income:</label>
-                <input type='number' value={acctValues.income} onChange={handleChange} name='income' placeholder='3000'></input>
+                {/* <label>Income:</label>
+                <input type='number' value={acctValues.income} onChange={handleChange} name='income' placeholder='3000'></input> */}
                 <button type='submit'>Create Account</button>
             </form>
         </div>
