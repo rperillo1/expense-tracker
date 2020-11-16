@@ -47,14 +47,14 @@ function App(props) {
       })
   };
 
-  const createAccount = async accountToCreate => {
+  const createAccount = accountToCreate => {
     // await mutation to add account to the user model;
-    console.log(accountToCreate)
-    await AddAccount({
-      variables: { name: accountToCreate.name, balance: accountToCreate.balance }
+    console.log(accountToCreate.name)
+    AddAccount({
+      variables: { name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
     })
     .then((result) => {
-      console.log(result)
+      console.log('result', result)
     });
   };
 

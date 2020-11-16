@@ -38,11 +38,13 @@ const mutation = new GraphQLObjectType({
                 name: { type: new GraphQLNonNull(GraphQLString)},
                 balance: { type: new GraphQLNonNull(GraphQLInt)},
             },
-            resolve(parentValue, { name, balance }, request ) {
-                console.log('name', name, 'balance', balance)
-                // return context.mongo.Accounts.create({ name: name, balance: balance })
-                // return name;
-                // hit db and save the fields to the account DB
+            async resolve(parentValue, { name, balance }, request ) {
+                // console.log(name, balance, '!!!')
+                let account;
+                account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
+                return account;
+                // return request.mongo.Users.findOne({ googleId: '115017414006295624552' })
+                // console.log('name', name, 'balance', balance)
             }
         }
     }

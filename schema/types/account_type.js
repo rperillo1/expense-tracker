@@ -23,27 +23,27 @@ const AccountType = new GraphQLObjectType({
     })
 });
 
-const ExpensesType = new GraphQLObjectType({
-    name: 'Expenses',
-    fields: () => ({
-        bills: { type: GraphQLList },
-        mortgage: { type: GraphQLList },
-        rent: { type: GraphQLList },
-        hoa: { type: GraphQLList },
-        gas: { type: GraphQLList },
-        restaurants: { type: GraphQLList },
-        pets: { type: GraphQLList },
-        homeImprovement: { type: GraphQLList },
-        automobile: { type: GraphQLList },
-        medical: { type: GraphQLList },
-        groceries: { type: GraphQLList },
-        transportation: { type: GraphQLList },
-        shopping: { type: GraphQLList },
-        entertainment: { type: GraphQLList },
-        personal: { type: GraphQLList },
-        other: { type: GraphQLList }
-    })
-});
+// const ExpensesType = new GraphQLObjectType({
+//     name: 'Expenses',
+//     fields: () => ({
+//         bills: { type: GraphQLList },
+//         mortgage: { type: GraphQLList },
+//         rent: { type: GraphQLList },
+//         hoa: { type: GraphQLList },
+//         gas: { type: GraphQLList },
+//         restaurants: { type: GraphQLList },
+//         pets: { type: GraphQLList },
+//         homeImprovement: { type: GraphQLList },
+//         automobile: { type: GraphQLList },
+//         medical: { type: GraphQLList },
+//         groceries: { type: GraphQLList },
+//         transportation: { type: GraphQLList },
+//         shopping: { type: GraphQLList },
+//         entertainment: { type: GraphQLList },
+//         personal: { type: GraphQLList },
+//         other: { type: GraphQLList }
+//     })
+// });
 
 
 module.exports = AccountType;
