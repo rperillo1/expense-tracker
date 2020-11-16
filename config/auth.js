@@ -13,7 +13,6 @@ async function verifyUser(req, res) {
     });
     const payload = ticket.getPayload();
     payload.googleId = payload.sub
-    console.log(payload)
     let user = await loginUser(payload);
     let data = { name:user.name, email: user.email, googleId: user.googleId, imageUrl: user.imageUrl}
     return data;

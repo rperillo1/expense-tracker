@@ -35,14 +35,19 @@ const mutation = new GraphQLObjectType({
         AddAccount: {
             type: AccountType,
             args: {
-                name: { type: new GraphQLNonNull(GraphQLString)},
-                balance: { type: new GraphQLNonNull(GraphQLInt)},
+                googleId: { type: new GraphQLNonNull(GraphQLString) },
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                balance: { type: new GraphQLNonNull(GraphQLInt) },
             },
-            async resolve(parentValue, { name, balance }, request ) {
-                // console.log(name, balance, '!!!')
-                let account;
-                account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
-                return account;
+            async resolve(parentValue, { googleId, name, balance }, request ) {
+                let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
+                let accountId = account.insertedId
+                let user = await request.mongo.Users.findOne({ googleId: googleId})
+                let newAccts = user.accounts.push(accountId)
+                console.log('newAccts', newAccts)
+                await request.mongo.Users.findOneAndUpdate({ googleId: googleId}, {accounts: newAccts}, { new: true, upsert: true})
+
+                return account.ops;
                 // return request.mongo.Users.findOne({ googleId: '115017414006295624552' })
                 // console.log('name', name, 'balance', balance)
             }

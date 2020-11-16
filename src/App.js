@@ -9,18 +9,14 @@ import tokenServices from "./utils/tokenServices";
 import LoginMutation from './queries/LoginMutation';
 import AddAccountMutation from './queries/AddAccountMutation';
 import { useMutation } from 'react-apollo';
-// import mutation from './queries/SingupOrLoginMutation';
-// import { graphql } from 'react-apollo';
-// import { withApollo } from "react-apollo";
-// import gql from 'graphql-tag';
 import './App.css';
 
 
 
 function App(props) {
   const { user, setUser } = useContext(UserContext);
-  const [LoginOrSignup, { data }] = useMutation(LoginMutation);
-  const [AddAccount, { stuff }] = useMutation(AddAccountMutation)
+  const [LoginOrSignup] = useMutation(LoginMutation);
+  const [AddAccount] = useMutation(AddAccountMutation)
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -41,7 +37,7 @@ function App(props) {
     })
       .then((result) => {
         let data = result.data.LoginOrSignup
-        tokenServices.setToken(result);
+        tokenServices.setToken(data);
         let user = { email: data.email, name: data.name, googleId: data.googleId, imageUrl: data.imageUrl }
         setUser(user);
       })
@@ -49,9 +45,8 @@ function App(props) {
 
   const createAccount = accountToCreate => {
     // await mutation to add account to the user model;
-    console.log(accountToCreate.name)
     AddAccount({
-      variables: { name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
+      variables: { googleId: user.googleId, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
     })
     .then((result) => {
       console.log('result', result)

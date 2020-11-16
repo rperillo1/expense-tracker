@@ -67,7 +67,6 @@ function removeToken() {
 
 function getToken() {
     let token = sessionStorage.getItem('token');
-    console.log('token from getToken', token)
     if (token) {
         // Check if expired, remove if it is
         const payload = JSON.parse(atob(token.split('.')[1]));
