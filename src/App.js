@@ -50,6 +50,7 @@ function App(props) {
     })
     .then((result) => {
       console.log('result', result)
+      console.log('user', user)
     });
   };
 

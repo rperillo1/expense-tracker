@@ -3,6 +3,7 @@ const graphql = require('graphql');
 const UserType = require('./types/user_type');
 const AuthService = require('../config/auth');
 const AccountType = require('./types/account_type');
+const user = require('../models/user');
 
 const {
     GraphQLObjectType,
@@ -45,10 +46,9 @@ const mutation = new GraphQLObjectType({
                 let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
                 let accountId = account.insertedId
                 let user = await request.mongo.Users.findOne({ googleId: googleId})
-                let newAccts = user.accounts.push(accountId)
-                console.log('newAccts', newAccts)
-                await request.mongo.Users.findOneAndUpdate({ googleId: googleId}, {accounts: newAccts}, { new: true, upsert: true})
-
+                user.accounts.push(accountId)
+                await request.mongo.Users.findOneAndUpdate({ googleId: googleId}, {$set: user}, { new: true, upsert: true, returnOriginal: false })
+                console.log(account.ops)
                 return account.ops;
                 // return request.mongo.Users.findOne({ googleId: '115017414006295624552' })
                 // console.log('name', name, 'balance', balance)
