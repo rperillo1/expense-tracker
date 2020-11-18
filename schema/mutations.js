@@ -8,7 +8,8 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLNonNull,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLList
 } = graphql;
 
 
@@ -27,8 +28,9 @@ const mutation = new GraphQLObjectType({
                 googleId: { type: new GraphQLNonNull(GraphQLString) },
                 imageUrl: { type: new GraphQLNonNull(GraphQLString) },
                 id_token: { type: new GraphQLNonNull(GraphQLString) },
+                accounts: { type: new GraphQLList(GraphQLString) }
             },
-            resolve(parentValue, { name, email, googleId, imageUrl, id_token }, request) {
+            resolve(parentValue, { name, email, googleId, imageUrl, id_token, accounts }, request) {
                 return AuthService.verifyUser({ name, email, googleId, imageUrl, id_token, req: request })
             }
         },

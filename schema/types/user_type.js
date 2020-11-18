@@ -16,6 +16,7 @@ const UserType = new GraphQLObjectType({
         email: { type: GraphQLString },
         googleId: { type: GraphQLString },
         imageUrl: { type: GraphQLString },
+        accounts: { type: GraphQLList(GraphQLString) }
         // accounts: {
         // type: GraphQLList(AccountType)
         // }

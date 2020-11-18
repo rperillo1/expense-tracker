@@ -7,10 +7,11 @@ let userSchema = new Schema({
   email: String,
   googleId: String,
   imageUrl: String,
-  accounts: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Account'
-  }]
+  accounts: Array
+  // accounts: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Account'
+  // }]
 }, {
   timestamps: true
 });
