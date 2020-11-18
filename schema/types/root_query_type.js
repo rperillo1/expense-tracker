@@ -13,12 +13,12 @@ const {
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        user: {
+        getUser: {
             type: UserType,
             args: { googleId: { type: GraphQLString } },
             resolve(parentValue, args, context) {
                 return context.mongo.Users.findOne({googleId: args.googleId})
-                    .then(response => response)
+                    .then(response => console.log(response))
             }
         },
         // accounts: {

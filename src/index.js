@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import { UserProvider } from "./contexts/UserContext";
+import { IsLoggedInProvider } from "./contexts/IsLoggedInContext";
 import * as serviceWorker from './serviceWorker';
 import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
@@ -18,13 +19,15 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-      <Router>
-        <React.StrictMode>
+    <Router>
+      <React.StrictMode>
+        <IsLoggedInProvider>
           <UserProvider>
             <App />
           </UserProvider>
-        </React.StrictMode>
-      </Router>
+        </IsLoggedInProvider>
+      </React.StrictMode>
+    </Router>
   </ApolloProvider>,
   document.getElementById('root')
 );

@@ -4,19 +4,26 @@ import Login from './components/Login'
 import Logout from './components/Logout'
 import Homepage from './pages/Homepage'
 import AddAccountPage from './pages/AddAccountPage'
-import { UserContext } from "./contexts/UserContext";
-import tokenServices from "./utils/tokenServices";
+import { UserContext } from './contexts/UserContext';
+import { IsLoggedInContext } from './contexts/IsLoggedInContext';
+import useToggle from './hooks/useToggleState';
+import tokenServices from './utils/tokenServices';
 import LoginMutation from './queries/LoginMutation';
 import AddAccountMutation from './queries/AddAccountMutation';
+import getUserQuery from './queries/getCurrentUserQuery';
 import { useMutation } from 'react-apollo';
+import { useLazyQuery } from 'react-apollo';
 import './App.css';
+import { token } from 'morgan';
 
 
 
 function App(props) {
+  const { isLoggedIn, toggleIsLoggedIn } = useContext(IsLoggedInContext);
   const { user, setUser } = useContext(UserContext);
   const [LoginOrSignup] = useMutation(LoginMutation);
-  const [AddAccount] = useMutation(AddAccountMutation)
+  const [AddAccount] = useMutation(AddAccountMutation);
+  const [getUserQ, { loading, data }] = useLazyQuery(getUserQuery)
 
   useEffect(() => {
     if (Object.keys(user).length === 0) {
@@ -27,7 +34,18 @@ function App(props) {
 
   const getUser = async () => {
     let user = await tokenServices.getUser();
-    setUser(user);
+    if (user) {
+      let _googleId = user.googleId;
+      getUserQ({ variables: { googleId: _googleId } })
+    } else {
+      toggleIsLoggedIn()
+    }
+
+    // console.log(loading, data)
+    // if (!loading) {
+    //   setUser(data)
+    // }
+
   }
 
 
@@ -44,14 +62,13 @@ function App(props) {
   };
 
   const createAccount = accountToCreate => {
-    // await mutation to add account to the user model;
     AddAccount({
       variables: { googleId: user.googleId, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
     })
-    .then((result) => {
-      console.log('result', result)
-      console.log('user', user)
-    });
+      .then((result) => {
+        console.log('result', result)
+        console.log('user', user)
+      });
   };
 
 
