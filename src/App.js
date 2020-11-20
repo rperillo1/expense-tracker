@@ -6,15 +6,14 @@ import Homepage from './pages/Homepage'
 import AddAccountPage from './pages/AddAccountPage'
 import { UserContext } from './contexts/UserContext';
 import { IsLoggedInContext } from './contexts/IsLoggedInContext';
-import useToggle from './hooks/useToggleState';
+// import useToggle from './hooks/useToggleState';
 import tokenServices from './utils/tokenServices';
 import LoginMutation from './queries/LoginMutation';
 import AddAccountMutation from './queries/AddAccountMutation';
-import getUserQuery from './queries/getCurrentUserQuery';
+import userQuery from './queries/getCurrentUserQuery';
 import { useMutation } from 'react-apollo';
 import { useLazyQuery } from 'react-apollo';
 import './App.css';
-import { token } from 'morgan';
 
 
 
@@ -23,28 +22,26 @@ function App(props) {
   const { user, setUser } = useContext(UserContext);
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
-  const [getUserQ, { loading, data }] = useLazyQuery(getUserQuery)
+  const [getUserQuery, { loading, data }] = useLazyQuery(userQuery, {
+    onCompleted: () => setUser(data.getUser)
+  })
 
   useEffect(() => {
-    if (Object.keys(user).length === 0) {
-      getUser();
-    }
+    // if (!isLoggedIn) {
+    getUser();
+    // }
   }, [])
 
 
   const getUser = async () => {
     let user = await tokenServices.getUser();
-    if (user) {
-      let _googleId = user.googleId;
-      getUserQ({ variables: { googleId: _googleId } })
+    if (Object.keys(user).length !== 0) {
+      getUserQuery({ variables: { googleId: user.googleId } })
+      toggleIsLoggedIn(true)
     } else {
-      toggleIsLoggedIn()
+      console.log('hit this')
+      toggleIsLoggedIn(false)
     }
-
-    // console.log(loading, data)
-    // if (!loading) {
-    //   setUser(data)
-    // }
 
   }
 
@@ -56,8 +53,9 @@ function App(props) {
       .then((result) => {
         let data = result.data.LoginOrSignup
         tokenServices.setToken(data);
-        let user = { email: data.email, name: data.name, googleId: data.googleId, imageUrl: data.imageUrl }
-        setUser(user);
+        // console.log('asdads', data.googleId)
+        getUserQuery({ variables: { googleId: data.googleId } })
+        toggleIsLoggedIn(true);
       })
   };
 
@@ -77,18 +75,23 @@ function App(props) {
       <header>
         <p>Expense Tracker</p>
 
-        {Object.keys(user).length === 0 ?
-          <Login authenticateUser={authenticateUser} />
+        {isLoggedIn ?
+          <Logout toggleIsLoggedIn={toggleIsLoggedIn} />
           :
-          <Logout />
+          <Login authenticateUser={authenticateUser} />
+        }
+        {loading ?
+          <div>loading</div>
+          :
+          <h1>finished</h1>
         }
 
       </header>
       <main>
-        {Object.keys(user).length === 0 ?
-          <div>Please Log In or Sign Up</div>
-          :
+        {isLoggedIn ?
           <Homepage></Homepage>
+          :
+          <div>Please Log In or Sign Up</div>
         }
         <Switch>
           <Route exact path='/add-account' render={({ history }) =>

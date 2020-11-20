@@ -50,8 +50,6 @@ const mutation = new GraphQLObjectType({
                 await request.mongo.Users.findOneAndUpdate({ googleId: googleId}, {$set: user}, { new: true, upsert: true, returnOriginal: false })
                 console.log(account.ops)
                 return account.ops;
-                // return request.mongo.Users.findOne({ googleId: '115017414006295624552' })
-                // console.log('name', name, 'balance', balance)
             }
         }
     }

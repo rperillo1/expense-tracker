@@ -17,8 +17,8 @@ const RootQuery = new GraphQLObjectType({
             type: UserType,
             args: { googleId: { type: GraphQLString } },
             resolve(parentValue, args, context) {
-                return context.mongo.Users.findOne({googleId: args.googleId})
-                    .then(response => console.log(response))
+                return context.mongo.Users.findOne({ googleId: args.googleId })
+                    .then(response => response)
             }
         },
         // accounts: {

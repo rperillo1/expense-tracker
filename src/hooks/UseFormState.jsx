@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { valuesIn } from "lodash";
 
 export default initialValue => {
     const [values, setValues] = useState(initialValue);

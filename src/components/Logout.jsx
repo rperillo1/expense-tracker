@@ -8,13 +8,14 @@ import { UserContext } from "../contexts/UserContext";
 const clientId = `${process.env.REACT_APP_GOOGLE_CLIENT_ID}`
 
 
-function LogoutPage() {
+function LogoutPage({ toggleIsLoggedIn }) {
     const { user, setUser } = useContext(UserContext);
 
 
     const onSuccess = () => {
         tokenServices.removeToken()
         setUser({});
+        toggleIsLoggedIn(false);
         alert('logout made successfully')
     };
 
