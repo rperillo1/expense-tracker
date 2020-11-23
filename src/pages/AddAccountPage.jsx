@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import UseFormState from "../hooks/UseFormState";
+import { UserContext } from '../contexts/UserContext';
+
+
 
 function AddAccountPage({ createAccount }) {
     const [acctValues, handleChange, reset] = UseFormState({ name: '', balance: 0 })
+    const { user, setUser } = useContext(UserContext);
 
 
 
     const handleSubmit = (e) => {
-        console.log('yo')
-        console.log(acctValues);
         createAccount(acctValues);
     }
 
@@ -27,6 +29,14 @@ function AddAccountPage({ createAccount }) {
                 <input type='number' value={acctValues.income} onChange={handleChange} name='income' placeholder='3000'></input> */}
                 <button type='submit'>Create Account</button>
             </form>
+            {Object.keys(user).length > 0 ? 
+                <h3>{user.accounts.length}</h3>
+                // user.accounts.map((acc) => 
+                //     <div>{acc}</div>
+                // )
+                :
+                <div>No User</div>
+            }
         </div>
     )
 }

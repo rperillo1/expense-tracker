@@ -38,18 +38,20 @@ const mutation = new GraphQLObjectType({
         AddAccount: {
             type: AccountType,
             args: {
+                accounts: { type: new GraphQLList(GraphQLString) },
                 googleId: { type: new GraphQLNonNull(GraphQLString) },
                 name: { type: new GraphQLNonNull(GraphQLString) },
                 balance: { type: new GraphQLNonNull(GraphQLInt) },
             },
-            async resolve(parentValue, { googleId, name, balance }, request ) {
-                let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
-                let accountId = account.insertedId
-                let user = await request.mongo.Users.findOne({ googleId: googleId})
-                user.accounts.push(accountId)
-                await request.mongo.Users.findOneAndUpdate({ googleId: googleId}, {$set: user}, { new: true, upsert: true, returnOriginal: false })
-                console.log(account.ops)
-                return account.ops;
+            async resolve(parentValue, { googleId, accounts, name, balance }, request) {
+                console.log('ACCTS', accounts)
+                // let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
+                // let accountId = account.insertedId
+                // let updatedAccounts = accounts.push(accountId);
+                // console.log(updatedAccounts)
+                // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
+                
+                // return { name: updatedUser.name, balance: updatedUser.balance };
             }
         }
     }
