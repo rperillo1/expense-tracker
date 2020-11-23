@@ -30,6 +30,7 @@ function AddAccountPage({ createAccount }) {
                 <button type='submit'>Create Account</button>
             </form>
             {Object.keys(user).length > 0 ? 
+                // <div>User</div>
                 <h3>{user.accounts.length}</h3>
                 // user.accounts.map((acc) => 
                 //     <div>{acc}</div>

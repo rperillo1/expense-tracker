@@ -18,6 +18,7 @@ const RootQuery = new GraphQLObjectType({
             args: { googleId: { type: GraphQLString } },
             resolve(parentValue, args, context) {
                 return context.mongo.Users.findOne({ googleId: args.googleId })
+                    // .then(response => console.log(response))
                     .then(response => response)
             }
         },

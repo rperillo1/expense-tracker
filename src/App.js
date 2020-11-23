@@ -23,21 +23,21 @@ function App(props) {
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
   const [getUserQuery, { loading, data }] = useLazyQuery(userQuery, {
-    onCompleted: () =>  {
+    onCompleted: () => {
+      console.log('data in userQuery', data)
       setUser(data.getUser)
       toggleIsLoggedIn(true)
     }
   })
 
   useEffect(() => {
-    // if (!isLoggedIn) {
     getUser();
-    // }
   }, [])
 
 
   const getUser = async () => {
     let user = await tokenServices.getUser();
+
     if (Object.keys(user).length !== 0) {
       getUserQuery({ variables: { googleId: user.googleId } })
       // toggleIsLoggedIn(true)
@@ -54,19 +54,17 @@ function App(props) {
       .then((result) => {
         let data = result.data.LoginOrSignup
         tokenServices.setToken(data);
-        console.log(data.googleId)
-        getUserQuery({ variables: { googleId: data.googleId } })
-        // toggleIsLoggedIn(true);
+        getUserQuery({ variables: { googleId: data.googleId } });
       })
   };
 
   const createAccount = accountToCreate => {
     AddAccount({
-      variables: { googleId: user.googleId, accounts: user.accounts, name: accountToCreate.name, balance: parseInt(accountToCreate.balance)}
+      variables: { googleId: user.googleId, accounts: user.accounts, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
     })
       .then((result) => {
         console.log('result', result)
-        console.log('user', user)
+        getUserQuery({ variables: { googleId: result.googleId } })
       });
   };
 
@@ -96,7 +94,7 @@ function App(props) {
         }
         <Switch>
           <Route exact path='/add-account' render={({ history }) =>
-            <AddAccountPage history={history} createAccount={createAccount}/>
+            <AddAccountPage history={history} createAccount={createAccount} />
           } />
 
         </Switch>

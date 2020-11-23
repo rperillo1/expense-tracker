@@ -4,6 +4,7 @@ const UserType = require('./types/user_type');
 const AuthService = require('../config/auth');
 const AccountType = require('./types/account_type');
 const user = require('../models/user');
+const accounts = require('../models/accounts');
 
 const {
     GraphQLObjectType,
@@ -36,7 +37,7 @@ const mutation = new GraphQLObjectType({
             }
         },
         AddAccount: {
-            type: AccountType,
+            type: UserType,
             args: {
                 accounts: { type: new GraphQLList(GraphQLString) },
                 googleId: { type: new GraphQLNonNull(GraphQLString) },
@@ -44,14 +45,12 @@ const mutation = new GraphQLObjectType({
                 balance: { type: new GraphQLNonNull(GraphQLInt) },
             },
             async resolve(parentValue, { googleId, accounts, name, balance }, request) {
-                console.log('ACCTS', accounts)
-                // let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
-                // let accountId = account.insertedId
-                // let updatedAccounts = accounts.push(accountId);
-                // console.log(updatedAccounts)
+                let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
+                let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $push: { "accounts": account.insertedId } }, { new: true, upsert: true, returnOriginal: false })
                 // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
-                
-                // return { name: updatedUser.name, balance: updatedUser.balance };
+                console.log('updateduser', updatedUser)
+                let data = updatedUser.value
+                return { googleId: data.googleId, accounts: data.accounts };
             }
         }
     }

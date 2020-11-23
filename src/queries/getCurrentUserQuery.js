@@ -9,7 +9,7 @@ query getUser($googleId: String! ) {
       googleId
       email
       imageUrl
-
+      accounts
   }
 }
 `;

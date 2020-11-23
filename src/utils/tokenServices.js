@@ -48,6 +48,7 @@ function createJWT(user) {
 
 async function getUser() {
     let user = await getUserFromToken()
+    console.log('yo dawh', user)
     if (user) {    
         return user;
     } else {
