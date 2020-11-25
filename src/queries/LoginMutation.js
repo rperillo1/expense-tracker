@@ -8,6 +8,8 @@ mutation LoginOrSignup($name: String!, $email: String!, $googleId: String!, $ima
     name
     googleId
     imageUrl
+    _id
+    accounts
   }
 }
 `

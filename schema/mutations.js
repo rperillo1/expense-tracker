@@ -48,7 +48,7 @@ const mutation = new GraphQLObjectType({
                 let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
                 let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $push: { "accounts": account.insertedId } }, { new: true, upsert: true, returnOriginal: false })
                 // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
-                console.log('updateduser', updatedUser)
+                // console.log('updateduser', typeof updatedUser.value.accounts[1])
                 let data = updatedUser.value
                 return { googleId: data.googleId, accounts: data.accounts };
                 

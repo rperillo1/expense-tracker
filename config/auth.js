@@ -14,7 +14,8 @@ async function verifyUser(req, res) {
     const payload = ticket.getPayload();
     payload.googleId = payload.sub
     let user = await loginUser(payload);
-    let data = { name:user.name, email: user.email, googleId: user.googleId, imageUrl: user.imageUrl}
+    console.log('user_id', typeof user._id)
+    let data = { name: user.name, email: user.email, googleId: user.googleId, imageUrl: user.imageUrl, _id: user._id, accounts: user.accounts }
     return data;
 }
 // verify().catch(console.error);

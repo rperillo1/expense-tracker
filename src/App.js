@@ -37,10 +37,9 @@ function App(props) {
 
   const getUser = async () => {
     let user = await tokenServices.getUser();
-
+    console.log('hitting this', user)
     if (Object.keys(user).length !== 0) {
       getUserQuery({ variables: { googleId: user.googleId } })
-      // toggleIsLoggedIn(true)
     } else {
       toggleIsLoggedIn(false)
     }
@@ -52,9 +51,11 @@ function App(props) {
       variables: { name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token }
     })
       .then((result) => {
-        let data = result.data.LoginOrSignup
-        tokenServices.setToken(data);
-        getUserQuery({ variables: { googleId: data.googleId } });
+        let userData = result.data.LoginOrSignup
+        console.log(userData)
+        tokenServices.setToken(userData);
+        setUser(userData)
+        toggleIsLoggedIn(true)
       })
   };
 
@@ -63,7 +64,6 @@ function App(props) {
       variables: { googleId: user.googleId, accounts: user.accounts, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
     })
       .then((result) => {
-        console.log('result', result)
         let _accounts = result.data.AddAccount.accounts
         let updatedUser = {...user, accounts: _accounts}
         setUser(updatedUser)
