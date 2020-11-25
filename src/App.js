@@ -64,7 +64,9 @@ function App(props) {
     })
       .then((result) => {
         console.log('result', result)
-        getUserQuery({ variables: { googleId: result.googleId } })
+        let _accounts = result.data.AddAccount.accounts
+        let updatedUser = {...user, accounts: _accounts}
+        setUser(updatedUser)
       });
   };
 

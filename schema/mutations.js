@@ -51,6 +51,7 @@ const mutation = new GraphQLObjectType({
                 console.log('updateduser', updatedUser)
                 let data = updatedUser.value
                 return { googleId: data.googleId, accounts: data.accounts };
+                
             }
         }
     }
