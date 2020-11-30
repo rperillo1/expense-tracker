@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
 
 
 
 function Homepage() {
+    const { user, setUser } = useContext(UserContext);
 
     return (
         <div>
-            <Link to='/add-account'>Create Account</Link>
-
+            {Object.keys(user).length > 0  ?
+                user.accounts.length > 0 ?
+                    <Link to='/accounts'>Your Accounts</Link>
+                    :
+                    <Link to='/accounts'>Create An Account</Link>
+                :
+                <div>Please Log In To Create An Account</div>
+            }
         </div>
     )
 }

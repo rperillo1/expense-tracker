@@ -24,7 +24,6 @@ function App(props) {
   const [AddAccount] = useMutation(AddAccountMutation);
   const [getUserQuery, { loading, data }] = useLazyQuery(userQuery, {
     onCompleted: () => {
-      console.log('data in userQuery', data)
       setUser(data.getUser)
       toggleIsLoggedIn(true)
     }
@@ -37,9 +36,11 @@ function App(props) {
 
   const getUser = async () => {
     let user = await tokenServices.getUser();
-    console.log('hitting this', user)
+
     if (Object.keys(user).length !== 0) {
-      getUserQuery({ variables: { googleId: user.googleId } })
+      getUserQuery({ 
+        variables: 
+        { googleId: user.googleId } })
     } else {
       toggleIsLoggedIn(false)
     }
@@ -48,11 +49,11 @@ function App(props) {
 
   const authenticateUser = res => {
     LoginOrSignup({
-      variables: { name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token }
+      variables: 
+      { name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token }
     })
       .then((result) => {
         let userData = result.data.LoginOrSignup
-        console.log(userData)
         tokenServices.setToken(userData);
         setUser(userData)
         toggleIsLoggedIn(true)
@@ -65,7 +66,7 @@ function App(props) {
     })
       .then((result) => {
         let _accounts = result.data.AddAccount.accounts
-        let updatedUser = {...user, accounts: _accounts}
+        let updatedUser = { ...user, accounts: _accounts }
         setUser(updatedUser)
       });
   };
@@ -89,16 +90,13 @@ function App(props) {
 
       </header>
       <main>
-        {isLoggedIn ?
-          <Homepage></Homepage>
-          :
-          <div>Please Log In or Sign Up</div>
-        }
         <Switch>
-          <Route exact path='/add-account' render={({ history }) =>
+          <Route exact path='/accounts' render={({ history }) =>
             <AddAccountPage history={history} createAccount={createAccount} />
           } />
-
+          <Route path='/' render={({ history }) =>
+            <Homepage history={history} />
+          } />
         </Switch>
       </main>
     </div>
