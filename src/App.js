@@ -10,10 +10,12 @@ import { IsLoggedInContext } from './contexts/IsLoggedInContext';
 import tokenServices from './utils/tokenServices';
 import LoginMutation from './queries/LoginMutation';
 import AddAccountMutation from './queries/AddAccountMutation';
+import getAccounts from './queries/getAccounts';
 import userQuery from './queries/getCurrentUserQuery';
-import { useMutation } from 'react-apollo';
+import { useMutation, useQuery } from 'react-apollo';
 import { useLazyQuery } from 'react-apollo';
 import './App.css';
+import { disableFragmentWarnings } from 'graphql-tag';
 
 
 
@@ -22,6 +24,12 @@ function App(props) {
   const { user, setUser } = useContext(UserContext);
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
+  const [getAccountsQuery, { loadingAccounts, accountData }] = useLazyQuery(getAccounts, {
+    onCompleted: () => {
+      console.log(loadingAccounts)
+      console.log('yo dawg its done', accountData)
+    }
+  })
   const [getUserQuery, { loading, data }] = useLazyQuery(userQuery, {
     onCompleted: () => {
       setUser(data.getUser)
@@ -38,9 +46,10 @@ function App(props) {
     let user = await tokenServices.getUser();
 
     if (Object.keys(user).length !== 0) {
-      getUserQuery({ 
-        variables: 
-        { googleId: user.googleId } })
+      getUserQuery({
+        variables:
+          { googleId: user.googleId }
+      })
     } else {
       toggleIsLoggedIn(false)
     }
@@ -49,8 +58,8 @@ function App(props) {
 
   const authenticateUser = res => {
     LoginOrSignup({
-      variables: 
-      { name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token }
+      variables:
+        { name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token }
     })
       .then((result) => {
         let userData = result.data.LoginOrSignup
@@ -70,11 +79,21 @@ function App(props) {
           let _accounts = result.data.AddAccount.accounts
           let updatedUser = { ...user, accounts: _accounts }
           setUser(updatedUser)
-        });
+          getAllAccounts(_accounts)
+        })
     } else {
       alert('Please log in or sign up to create an account.')
     }
   };
+
+  const getAllAccounts = (accountsArray) => {
+    accountsArray.forEach(acct => {
+      getAccountsQuery({
+        variables:
+          { _id: acct }
+      })
+    })
+  }
 
 
   return (
@@ -87,7 +106,7 @@ function App(props) {
           :
           <Login authenticateUser={authenticateUser} />
         }
-        {loading ?
+        {loadingAccounts ?
           <div>loading</div>
           :
           <h1>finished</h1>
@@ -97,7 +116,7 @@ function App(props) {
       <main>
         <Switch>
           <Route exact path='/accounts' render={({ history }) =>
-            <AddAccountPage history={history} createAccount={createAccount} />
+            <AddAccountPage history={history} createAccount={createAccount} getAllAccounts={getAllAccounts} />
           } />
           <Route path='/' render={({ history }) =>
             <Homepage history={history} />

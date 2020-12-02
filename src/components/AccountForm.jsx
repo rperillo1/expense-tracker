@@ -5,7 +5,7 @@ import UseFormState from "../hooks/UseFormState";
 
 
 
-function AddAccountPage({ createAccount }) {
+function AccountForm({ createAccount }) {
     const [acctValues, handleChange, reset] = UseFormState({ name: '', balance: 0 })
     // const { user, setUser } = useContext(UserContext);
 
@@ -36,4 +36,4 @@ function AddAccountPage({ createAccount }) {
 
 
 
-export default AddAccountPage;
+export default AccountForm;

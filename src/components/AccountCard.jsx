@@ -1,9 +1,12 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import { AccountContext } from '../contexts/AccountContext';
 
 
-function AccountCard() {
+function AccountCard({ getAllAccounts }) {
     const { user, setUser } = useContext(UserContext);
+    const { accounts, setAccounts } = useContext(AccountContext);
+
 
     return (
         <div>

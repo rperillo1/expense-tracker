@@ -1,11 +1,13 @@
 const graphql = require('graphql');
 const UserType = require('./user_type');
-
+const AccountType = require('./account_type');
+const ObjectId = require('mongodb').ObjectID;
 
 
 const {
     GraphQLObjectType,
     GraphQLString,
+    GraphQLID
 } = graphql;
 
 
@@ -18,18 +20,18 @@ const RootQuery = new GraphQLObjectType({
             args: { googleId: { type: GraphQLString } },
             resolve(parentValue, args, context) {
                 return context.mongo.Users.findOne({ googleId: args.googleId })
-                    // .then(response => console.log(response))
                     .then(response => response)
             }
         },
-        // accounts: {
-        //     type: AccountType,
-        //     args: { id: { type: GraphQLString } },
-        //     resolve(parentValue, args) {
-        //         return axios.get(`http://localhost:3001/api/accounts/${args.id}`)
-        //             .then(response => response.data[0])
-        //     }
-        // }
+        getAccounts: {
+            type: AccountType,
+            args: { _id: { type: GraphQLString } },
+            resolve(parentValue, args, context) {
+                let objectId = ObjectId(args._id)
+                return context.mongo.Accounts.findOne({ _id: objectId})
+                    .then(response => response)
+            }
+        }
     }
 });
 

@@ -5,23 +5,25 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLInt,
-    // GraphQLNonNull,
+    GraphQLID
     // GraphQLSchema,
-    GraphQLList
+    // GraphQLList
 } = graphql;
 
 
 const AccountType = new GraphQLObjectType({
     name: 'Account',
     fields: () => ({
+        _id: { type: GraphQLString },
         name: { type: GraphQLString },
         balance: { type: GraphQLInt },
-        // income: { type: GraphQLObjectType },
-        // expenses: {
-        //     type: ExpensesType
-        // }
     })
 });
+
+// income: { type: GraphQLObjectType },
+// expenses: {
+//     type: ExpensesType
+// }
 
 // const ExpensesType = new GraphQLObjectType({
 //     name: 'Expenses',

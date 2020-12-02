@@ -2,8 +2,6 @@ const graphql = require('graphql');
 const UserType = require('./types/user_type');
 const AuthService = require('../config/auth');
 const AccountType = require('./types/account_type');
-const user = require('../models/user');
-const accounts = require('../models/accounts');
 const requiresAuth = require('../config/permissions');
 
 const {
@@ -36,23 +34,6 @@ const mutation = new GraphQLObjectType({
                 return AuthService.verifyUser({ name, email, googleId, imageUrl, id_token, req: request })
             }
         },
-        // AddAccount: {
-        //     type: UserType,
-        //     args: {
-        //         accounts: { type: new GraphQLList(GraphQLString) },
-        //         googleId: { type: new GraphQLNonNull(GraphQLString) },
-        //         name: { type: new GraphQLNonNull(GraphQLString) },
-        //         balance: { type: new GraphQLNonNull(GraphQLInt) },
-        //     },
-        //     async resolve(parentValue, { googleId, accounts, name, balance }, request) {
-        //         let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
-        //         let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $push: { "accounts": account.insertedId } }, { new: true, upsert: true, returnOriginal: false })
-        //         // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
-        //         let data = updatedUser.value
-        //         return { googleId: data.googleId, accounts: data.accounts };
-                
-        //     }
-        // },
         AddAccount: {
             type: UserType,
             args: {
@@ -70,8 +51,7 @@ const mutation = new GraphQLObjectType({
                 } catch(err) {
                     return err;
                 }
-                // // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
-                
+            // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })         
             })
         },
     }
