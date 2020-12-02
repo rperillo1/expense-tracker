@@ -61,7 +61,7 @@ function App(props) {
   };
 
   const createAccount = accountToCreate => {
-    if (Object.keys(user).length > 0) {
+    if (isLoggedIn) {
       AddAccount({
         variables: { googleId: user.googleId, accounts: user.accounts, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
       })
