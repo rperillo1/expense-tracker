@@ -36,6 +36,23 @@ const mutation = new GraphQLObjectType({
                 return AuthService.verifyUser({ name, email, googleId, imageUrl, id_token, req: request })
             }
         },
+        // AddAccount: {
+        //     type: UserType,
+        //     args: {
+        //         accounts: { type: new GraphQLList(GraphQLString) },
+        //         googleId: { type: new GraphQLNonNull(GraphQLString) },
+        //         name: { type: new GraphQLNonNull(GraphQLString) },
+        //         balance: { type: new GraphQLNonNull(GraphQLInt) },
+        //     },
+        //     async resolve(parentValue, { googleId, accounts, name, balance }, request) {
+        //         let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
+        //         let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $push: { "accounts": account.insertedId } }, { new: true, upsert: true, returnOriginal: false })
+        //         // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
+        //         let data = updatedUser.value
+        //         return { googleId: data.googleId, accounts: data.accounts };
+                
+        //     }
+        // },
         AddAccount: {
             type: UserType,
             args: {
@@ -44,15 +61,19 @@ const mutation = new GraphQLObjectType({
                 name: { type: new GraphQLNonNull(GraphQLString) },
                 balance: { type: new GraphQLNonNull(GraphQLInt) },
             },
-            async resolve(parentValue, { googleId, accounts, name, balance }, request) {
-                let account = await request.mongo.Accounts.insertOne({ name: name, balance: balance })
-                let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $push: { "accounts": account.insertedId } }, { new: true, upsert: true, returnOriginal: false })
-                // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
-                let data = updatedUser.value
-                return { googleId: data.googleId, accounts: data.accounts };
+            resolve: requiresAuth.createResolver(async(parentValue, args, request) => {
+                try {
+                    let account = await request.mongo.Accounts.insertOne({ name: args.name, balance: args.balance })
+                    let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: args.googleId }, { $push: { "accounts": account.insertedId } }, { new: true, upsert: true, returnOriginal: false })
+                    let data = updatedUser.value
+                    return { googleId: data.googleId, accounts: data.accounts };
+                } catch(err) {
+                    return err;
+                }
+                // // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })
                 
-            }
-        }
+            })
+        },
     }
 });
 

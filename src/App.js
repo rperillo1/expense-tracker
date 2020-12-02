@@ -61,14 +61,19 @@ function App(props) {
   };
 
   const createAccount = accountToCreate => {
-    AddAccount({
-      variables: { googleId: user.googleId, accounts: user.accounts, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
-    })
-      .then((result) => {
-        let _accounts = result.data.AddAccount.accounts
-        let updatedUser = { ...user, accounts: _accounts }
-        setUser(updatedUser)
-      });
+    if (Object.keys(user).length > 0) {
+      AddAccount({
+        variables: { googleId: user.googleId, accounts: user.accounts, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
+      })
+        .then((result) => {
+          console.log('result or error', result)
+          let _accounts = result.data.AddAccount.accounts
+          let updatedUser = { ...user, accounts: _accounts }
+          setUser(updatedUser)
+        });
+    } else {
+      alert('Please log in or sign up to create an account.')
+    }
   };
 
 
