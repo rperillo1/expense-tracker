@@ -6,6 +6,7 @@ import Homepage from './pages/Homepage'
 import AddAccountPage from './pages/AddAccountPage'
 import { UserContext } from './contexts/UserContext';
 import { IsLoggedInContext } from './contexts/IsLoggedInContext';
+import { AccountContext } from './contexts/AccountContext';
 // import useToggle from './hooks/useToggleState';
 import tokenServices from './utils/tokenServices';
 import LoginMutation from './queries/LoginMutation';
@@ -15,19 +16,23 @@ import userQuery from './queries/getCurrentUserQuery';
 import { useMutation, useQuery } from 'react-apollo';
 import { useLazyQuery } from 'react-apollo';
 import './App.css';
-import { disableFragmentWarnings } from 'graphql-tag';
 
 
 
 function App(props) {
   const { isLoggedIn, toggleIsLoggedIn } = useContext(IsLoggedInContext);
+  const { accounts, setAccounts } = useContext(AccountContext);
+
   const { user, setUser } = useContext(UserContext);
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
+  let datas = [];
   const [getAccountsQuery, { loadingAccounts, accountData }] = useLazyQuery(getAccounts, {
-    onCompleted: () => {
+    
+    onCompleted: (data) => {
       console.log(loadingAccounts)
-      console.log('yo dawg its done', accountData)
+      console.log('yo dawg its done', data)
+      datas.push(data)
     }
   })
   const [getUserQuery, { loading, data }] = useLazyQuery(userQuery, {
@@ -76,18 +81,19 @@ function App(props) {
       })
         .then((result) => {
           console.log('result or error', result)
-          let _accounts = result.data.AddAccount.accounts
-          let updatedUser = { ...user, accounts: _accounts }
-          setUser(updatedUser)
-          getAllAccounts(_accounts)
+          let _accounts = result.data.AddAccount.accounts;
+          let updatedUser = { ...user, accounts: _accounts };
+          setUser(updatedUser);
+          getAllAccounts(_accounts);
         })
     } else {
-      alert('Please log in or sign up to create an account.')
+      alert('Please log in or sign up to create an account.');
     }
   };
 
   const getAllAccounts = (accountsArray) => {
     accountsArray.forEach(acct => {
+      console.log('acct', acct)
       getAccountsQuery({
         variables:
           { _id: acct }
@@ -128,7 +134,7 @@ function App(props) {
 }
 
 export default App;
-// export default graphql(mutation)(App);
+
 
 
 
