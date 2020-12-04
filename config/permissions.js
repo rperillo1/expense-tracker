@@ -1,9 +1,7 @@
 const createResolver = (resolver) => {
-    console.log('hit dat', resolver)
     const baseResolver = resolver;
     baseResolver.createResolver = (childResolver) => {
         const newResolver = async (parent, args, context, info) => {
-            console.log('newResolver', parent, args, context)
             await resolver(parent, args, context, info);
             return childResolver(parent, args, context, info);
         };

@@ -29,14 +29,11 @@ const RootQuery = new GraphQLObjectType({
             args: { _id: { type: GraphQLList(GraphQLString) } },
             resolve: async (parentValue, args, context) => {
                 try {
-                    console.log('args', args)
                     let acctObjIds = [];
                     args._id.forEach(id => {
                         acctObjIds.push(ObjectId(id))
                     })
-                    let accts = await context.mongo.Accounts.find({ _id: { $in: acctObjIds } })
-                    .toArray()
-                    console.log('accts',accts)
+                    let accts = await context.mongo.Accounts.find({ _id: { $in: acctObjIds } }).toArray()
                     return { accounts: accts}
                 } catch (err) {
                     console.log(err)

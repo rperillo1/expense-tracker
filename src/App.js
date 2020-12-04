@@ -52,6 +52,7 @@ function App(props) {
         variables:
           { googleId: user.googleId }
       })
+      getAllAccounts(user.accounts);
     } else {
       toggleIsLoggedIn(false)
     }
@@ -81,7 +82,7 @@ function App(props) {
           let _accounts = result.data.AddAccount.accounts;
           let updatedUser = { ...user, accounts: _accounts };
           setUser(updatedUser);
-          getAllAccounts(_accounts);
+          getAllAccounts(user.accounts);
         })
     } else {
       alert('Please log in or sign up to create an account.');
@@ -89,7 +90,6 @@ function App(props) {
   };
 
   const getAllAccounts = (accountsArray) => {
-    console.log(accountsArray)
       getAccountsQuery({
         variables:
           { _id: accountsArray }

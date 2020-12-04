@@ -11,9 +11,10 @@ function AccountCard({ getAllAccounts }) {
     return (
         <div>
         {Object.keys(user).length > 0 ?
-            user.accounts.map((acc) =>
+            accounts.map((acc) =>
                 <div>
-                    <div>{acc}</div>
+                    <div>{acc.name}</div>
+                    <div>{acc.balance}</div>
                 </div>
             )
             :
