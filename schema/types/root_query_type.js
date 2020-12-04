@@ -1,6 +1,7 @@
 const graphql = require('graphql');
 const UserType = require('./user_type');
 const AccountType = require('./account_type');
+const AccountsType = require('./accounts_type');
 const ObjectId = require('mongodb').ObjectID;
 
 
@@ -24,17 +25,32 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         getAccounts: {
-            type: AccountType,
+            type: AccountsType,
             args: { _id: { type: GraphQLList(GraphQLString) } },
-            resolve(parentValue, args, context) {
-                let acctObjIds = [];
-                args._id.forEach(id => {
-                    acctObjIds.push(ObjectId(id))
-                })
-                return context.mongo.Accounts.find({ _id: { $in: acctObjIds}})
-                .toArray()
-                .then(items => items)
-                // .then(items => console.log(items))
+            resolve: async (parentValue, args, context) => {
+                try {
+                    console.log('args', args)
+                    let acctObjIds = [];
+                    args._id.forEach(id => {
+                        acctObjIds.push(ObjectId(id))
+                    })
+                    let accts = await context.mongo.Accounts.find({ _id: { $in: acctObjIds } })
+                    .toArray()
+                    console.log('accts',accts)
+                    return { accounts: accts}
+                } catch (err) {
+                    console.log(err)
+                }
+                // let acctObjIds = [];
+                // args._id.forEach(id => {
+                //     acctObjIds.push(ObjectId(id))
+                // })
+                // return context.mongo.Accounts.find({ _id: { $in: acctObjIds } })
+                //     .toArray()
+                //     .then(items => {
+                //         { accounts: items }
+                //     })
+                // .then(items => items)
             }
         },
         // getAccounts: {

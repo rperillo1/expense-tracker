@@ -26,13 +26,10 @@ function App(props) {
   const { user, setUser } = useContext(UserContext);
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
-  let datas = [];
   const [getAccountsQuery, { loadingAccounts, accountData }] = useLazyQuery(getAccounts, {
-    
     onCompleted: (data) => {
-      console.log(loadingAccounts)
-      console.log('yo dawg its done', data)
-      datas.push(data)
+      let accts = data.getAccounts.accounts
+      setAccounts(accts)
     }
   })
   const [getUserQuery, { loading, data }] = useLazyQuery(userQuery, {
@@ -92,13 +89,11 @@ function App(props) {
   };
 
   const getAllAccounts = (accountsArray) => {
-    accountsArray.forEach(acct => {
-      console.log('acct', acct)
+    console.log(accountsArray)
       getAccountsQuery({
         variables:
-          { _id: acct }
+          { _id: accountsArray }
       })
-    })
   }
 
 

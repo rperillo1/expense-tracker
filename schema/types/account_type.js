@@ -12,8 +12,9 @@ const {
 
 
 const AccountType = new GraphQLObjectType({
-    name: 'Account',
+    name: 'Accounts',
     fields: () => ({
+        // accounts: { type: GraphQLList(graphQL)}
         _id: { type: GraphQLString },
         name: { type: GraphQLString },
         balance: { type: GraphQLInt },
