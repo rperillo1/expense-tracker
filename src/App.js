@@ -69,6 +69,7 @@ function App(props) {
         tokenServices.setToken(userData);
         setUser(userData)
         toggleIsLoggedIn(true)
+        getAllAccounts(userData.accounts)
       })
   };
 
