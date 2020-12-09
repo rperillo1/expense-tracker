@@ -66,8 +66,8 @@ const mutation = new GraphQLObjectType({
                     let acctObjId = ObjectId(args._id);
                     let deletedAccount = await request.mongo.Accounts.findOneAndDelete({ _id: acctObjId });
                     let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: args.googleId }, { $pull: { "accounts": acctObjId } }, { new: true, upsert: true, returnOriginal: false })
-                    let data = updatedUser.value;
-                    return { accounts: data.accounts }
+                    let updatedAccounts = updatedUser.value.accounts
+                    return { accounts: updatedAccounts }
                 } catch (err) {
                     console.log(err)
                 }

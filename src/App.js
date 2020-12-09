@@ -104,9 +104,10 @@ function App(props) {
         { _id: accountId, googleId: user.googleId }
     })
       .then((res) => {
-        let updatedAccounts = user.accounts.filter(acct => acct !== res.data.DeleteAccount._id)
-        // let updatedUser = { ...user, accounts: updatedAccounts }
-        setUser({...user, accounts: updatedAccounts})
+        let updatedAccounts = res.data.DeleteAccount.accounts;
+        console.log('up', updatedAccounts)
+        setUser({...user, accounts: updatedAccounts});
+        getAllAccounts(updatedAccounts);
       })
   }
 
