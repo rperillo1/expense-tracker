@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import { AccountContext } from '../contexts/AccountContext';
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,7 +49,7 @@ function AccountCard({ deleteOneAccount }) {
         <div className={classes.main}>
             {Object.keys(user).length > 0 ?
                 accounts.map((acc) =>
-                    <Grid container 
+                    <Grid container
                         spacing={3} className={classes.root} justify="space-around" alignItems="center">
                         <Grid item xs={6} sm={8}>
                             <Paper className={classes.paper}>
@@ -65,11 +66,15 @@ function AccountCard({ deleteOneAccount }) {
                                         </Typography>
                                     </CardContent>
                                     <CardActions className={classes.action}>
-                                        <Button size="small" 
-                                        >Go to Account</Button>
+                                        <Link exact to='/account/detail'>
+                                            <Button size="small">
+                                                Go to Account
+                                            </Button>
+                                        </Link>
                                         <Button size="small"
-                                        onClick={() => deleteOneAccount(acc._id)}
-                                        >Delete Account</Button>
+                                            onClick={() => deleteOneAccount(acc._id)}>
+                                            Delete Account
+                                        </Button>
                                     </CardActions>
                                 </Card>
                             </Paper>

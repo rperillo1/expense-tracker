@@ -27,7 +27,7 @@ function LoginPage({ authenticateUser }) {
         <div>
             <GoogleLogin
                 clientId={clientId}
-                buttonText="Login"
+                buttonText="Login with Google"
                 onSuccess={onSuccess}
                 onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}

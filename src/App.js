@@ -4,7 +4,8 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Homepage from './pages/Homepage';
 import Navbar from './components/Navbar';
-import AddAccountPage from './pages/AddAccountPage';
+import AccountPage from './pages/AccountPage';
+import AccountDetailPage from './pages/AccountDetailPage';
 import { UserContext } from './contexts/UserContext';
 import { IsLoggedInContext } from './contexts/IsLoggedInContext';
 import { AccountContext } from './contexts/AccountContext';
@@ -15,6 +16,7 @@ import AddAccountMutation from './queries/AddAccountMutation';
 import DeleteAccountMutation from './queries/DeleteAccountMutation';
 import getAccounts from './queries/getAccounts';
 import userQuery from './queries/getCurrentUserQuery';
+import getAccountQuery from './queries/getOneAccountQuery';
 import { useMutation, useQuery } from 'react-apollo';
 import { useLazyQuery } from 'react-apollo';
 import './App.css';
@@ -29,6 +31,7 @@ function App(props) {
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
   const [DeleteAccount] = useMutation(DeleteAccountMutation);
+
   const [getAccountsQuery, { loadingAccounts, accountData }] = useLazyQuery(getAccounts, {
     onCompleted: (data) => {
       let accts = data.getAccounts.accounts
@@ -40,6 +43,11 @@ function App(props) {
       setUser(data.getUser)
       toggleIsLoggedIn(true)
       getAllAccounts(data.getUser.accounts);
+    }
+  })
+  const [getOneAccountQuery, { loadingAcct, acctData }] = useLazyQuery(getAccountQuery, {
+    onCompleted: (data) => {
+      console.log("completed GetOne Account")
     }
   })
 
@@ -105,9 +113,15 @@ function App(props) {
     })
       .then((res) => {
         let updatedAccounts = res.data.DeleteAccount.accounts;
-        setUser({...user, accounts: updatedAccounts});
+        setUser({ ...user, accounts: updatedAccounts });
         getAllAccounts(updatedAccounts);
       })
+  }
+
+  const getOneAccount = (accountId) => {
+    getOneAccountQuery({
+      variables: { _id: accountId }
+    })
   }
 
 
@@ -119,12 +133,16 @@ function App(props) {
       <main>
         <Switch>
           <Route exact path='/accounts' render={({ history }) =>
-            <AddAccountPage history={history}
+            <AccountPage history={history}
               createAccount={createAccount}
-              getAllAccounts={getAllAccounts}
               deleteOneAccount={deleteOneAccount}
             />
           } />
+          <Route exact path='/account/detail' render={({ history }) => 
+            <AccountDetailPage history={history} 
+            getOneAccount={getOneAccount}
+            />
+          }/>
           <Route path='/' render={({ history }) =>
             <Homepage history={history} />
           } />

@@ -40,6 +40,14 @@ const RootQuery = new GraphQLObjectType({
                 }
             }
         },
+        getOneAccount: {
+            type: AccountType,
+            args: { _id: {type: GraphQLString }},
+            resolve(parentValue, args, context) {
+                console.log("hitting that bitch")
+                return; 
+            }
+        }
     }
 });
 
