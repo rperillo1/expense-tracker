@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
-import Login from './components/Login';
-import Logout from './components/Logout';
+import { Route, Switch } from 'react-router-dom';
 import Homepage from './pages/Homepage';
 import Navbar from './components/Navbar';
 import AccountPage from './pages/AccountPage';

@@ -1,8 +1,14 @@
 import React from 'react';
+import { useEffect } from 'react';
 
-function AccountDetailPage({getOneAccount}) {
+function AccountDetailPage({ getOneAccount }) {
+
+    // useEffect(()=> {
+    //     getOneAccount()
+    // })
+
     return (
-        <div>Account detial page</div>
+        <div>Account detail page</div>
 
     )
 }

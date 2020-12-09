@@ -66,10 +66,8 @@ function AccountCard({ deleteOneAccount }) {
                                         </Typography>
                                     </CardContent>
                                     <CardActions className={classes.action}>
-                                        <Link exact to='/account/detail'>
-                                            <Button size="small">
-                                                Go to Account
-                                            </Button>
+                                        <Link to='/account/detail'>
+                                            Go To Account
                                         </Link>
                                         <Button size="small"
                                             onClick={() => deleteOneAccount(acc._id)}>
