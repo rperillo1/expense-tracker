@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import Login from './components/Login'
-import Logout from './components/Logout'
-import Homepage from './pages/Homepage'
-import AddAccountPage from './pages/AddAccountPage'
+import Login from './components/Login';
+import Logout from './components/Logout';
+import Homepage from './pages/Homepage';
+import Navbar from './components/Navbar';
+import AddAccountPage from './pages/AddAccountPage';
 import { UserContext } from './contexts/UserContext';
 import { IsLoggedInContext } from './contexts/IsLoggedInContext';
 import { AccountContext } from './contexts/AccountContext';
@@ -91,7 +92,6 @@ function App(props) {
   };
 
   const getAllAccounts = (accountsArray) => {
-    console.log('acctarray', accountsArray)
     getAccountsQuery({
       variables:
         { _id: accountsArray }
@@ -105,7 +105,6 @@ function App(props) {
     })
       .then((res) => {
         let updatedAccounts = res.data.DeleteAccount.accounts;
-        console.log('up', updatedAccounts)
         setUser({...user, accounts: updatedAccounts});
         getAllAccounts(updatedAccounts);
       })
@@ -115,19 +114,7 @@ function App(props) {
   return (
     <div className="App">
       <header>
-        <p>Expense Tracker</p>
-
-        {isLoggedIn ?
-          <Logout toggleIsLoggedIn={toggleIsLoggedIn} />
-          :
-          <Login authenticateUser={authenticateUser} />
-        }
-        {loadingAccounts ?
-          <div>loading</div>
-          :
-          <h1>finished</h1>
-        }
-
+        <Navbar authenticateUser={authenticateUser}></Navbar>
       </header>
       <main>
         <Switch>
