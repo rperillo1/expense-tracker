@@ -34,31 +34,12 @@ const RootQuery = new GraphQLObjectType({
                         acctObjIds.push(ObjectId(id))
                     })
                     let accts = await context.mongo.Accounts.find({ _id: { $in: acctObjIds } }).toArray()
-                    return { accounts: accts}
+                    return { accounts: accts }
                 } catch (err) {
                     console.log(err)
                 }
-                // let acctObjIds = [];
-                // args._id.forEach(id => {
-                //     acctObjIds.push(ObjectId(id))
-                // })
-                // return context.mongo.Accounts.find({ _id: { $in: acctObjIds } })
-                //     .toArray()
-                //     .then(items => {
-                //         { accounts: items }
-                //     })
-                // .then(items => items)
             }
         },
-        // getAccounts: {
-        //     type: AccountType,
-        //     args: { _id: { type: GraphQLString } },
-        //     async resolve(parentValue, args, context) {
-        //         let objectId = await ObjectId(args._id)
-        //         return context.mongo.Accounts.findOne({ _id: objectId})
-        //             .then(response => response)
-        //     }
-        // }
     }
 });
 

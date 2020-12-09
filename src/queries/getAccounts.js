@@ -7,6 +7,7 @@ query getAccounts($_id: [String!]) {
       accounts {
           name
           balance
+          _id
       }
   }
 }

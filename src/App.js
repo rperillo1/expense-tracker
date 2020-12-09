@@ -11,6 +11,7 @@ import { AccountContext } from './contexts/AccountContext';
 import tokenServices from './utils/tokenServices';
 import LoginMutation from './queries/LoginMutation';
 import AddAccountMutation from './queries/AddAccountMutation';
+import DeleteAccountMutation from './queries/DeleteAccountMutation';
 import getAccounts from './queries/getAccounts';
 import userQuery from './queries/getCurrentUserQuery';
 import { useMutation, useQuery } from 'react-apollo';
@@ -26,6 +27,7 @@ function App(props) {
   const { user, setUser } = useContext(UserContext);
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
+  const [DeleteAccount] = useMutation(DeleteAccountMutation);
   const [getAccountsQuery, { loadingAccounts, accountData }] = useLazyQuery(getAccounts, {
     onCompleted: (data) => {
       let accts = data.getAccounts.accounts
@@ -36,6 +38,7 @@ function App(props) {
     onCompleted: () => {
       setUser(data.getUser)
       toggleIsLoggedIn(true)
+      getAllAccounts(data.getUser.accounts);
     }
   })
 
@@ -46,13 +49,11 @@ function App(props) {
 
   const getUser = async () => {
     let user = await tokenServices.getUser();
-
     if (Object.keys(user).length !== 0) {
       getUserQuery({
         variables:
           { googleId: user.googleId }
       })
-      getAllAccounts(user.accounts);
     } else {
       toggleIsLoggedIn(false)
     }
@@ -64,8 +65,8 @@ function App(props) {
       variables:
         { name: res.profileObj.name, email: res.profileObj.email, googleId: res.googleId, imageUrl: res.profileObj.imageUrl, id_token: res.tokenObj.id_token }
     })
-      .then((result) => {
-        let userData = result.data.LoginOrSignup
+      .then((res) => {
+        let userData = res.data.LoginOrSignup
         tokenServices.setToken(userData);
         setUser(userData)
         toggleIsLoggedIn(true)
@@ -78,12 +79,11 @@ function App(props) {
       AddAccount({
         variables: { googleId: user.googleId, accounts: user.accounts, name: accountToCreate.name, balance: parseInt(accountToCreate.balance) }
       })
-        .then((result) => {
-          console.log('result or error', result)
-          let _accounts = result.data.AddAccount.accounts;
+        .then((res) => {
+          let _accounts = res.data.AddAccount.accounts;
           let updatedUser = { ...user, accounts: _accounts };
           setUser(updatedUser);
-          getAllAccounts(user.accounts);
+          getAllAccounts(_accounts);
         })
     } else {
       alert('Please log in or sign up to create an account.');
@@ -91,9 +91,22 @@ function App(props) {
   };
 
   const getAllAccounts = (accountsArray) => {
-      getAccountsQuery({
-        variables:
-          { _id: accountsArray }
+    console.log('acctarray', accountsArray)
+    getAccountsQuery({
+      variables:
+        { _id: accountsArray }
+    })
+  }
+
+  const deleteOneAccount = (accountId) => {
+    DeleteAccount({
+      variables:
+        { _id: accountId, googleId: user.googleId }
+    })
+      .then((res) => {
+        let updatedAccounts = user.accounts.filter(acct => acct !== res.data.DeleteAccount._id)
+        // let updatedUser = { ...user, accounts: updatedAccounts }
+        setUser({...user, accounts: updatedAccounts})
       })
   }
 
@@ -118,7 +131,11 @@ function App(props) {
       <main>
         <Switch>
           <Route exact path='/accounts' render={({ history }) =>
-            <AddAccountPage history={history} createAccount={createAccount} getAllAccounts={getAllAccounts} />
+            <AddAccountPage history={history}
+              createAccount={createAccount}
+              getAllAccounts={getAllAccounts}
+              deleteOneAccount={deleteOneAccount}
+            />
           } />
           <Route path='/' render={({ history }) =>
             <Homepage history={history} />

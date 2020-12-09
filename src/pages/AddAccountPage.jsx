@@ -4,11 +4,11 @@ import AccountForm from '../components/AccountForm';
 
 
 
-function AddAccountPage({ createAccount, getAllAccounts }) {
+function AddAccountPage({ createAccount, getAllAccounts, deleteOneAccount }) {
 
     return (
         <div>
-            <AccountCard getAllAcconts={getAllAccounts}/>
+            <AccountCard getAllAcconts={getAllAccounts} deleteOneAccount={deleteOneAccount}/>
             <AccountForm createAccount={createAccount} />
         </div>
     )

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function AccountCard({ getAllAccounts }) {
+function AccountCard({ deleteOneAccount }) {
     const { user, setUser } = useContext(UserContext);
     const { accounts, setAccounts } = useContext(AccountContext);
     const classes = useStyles();
@@ -65,8 +65,11 @@ function AccountCard({ getAllAccounts }) {
                                         </Typography>
                                     </CardContent>
                                     <CardActions className={classes.action}>
-                                        <Button size="small">Go to Account</Button>
-                                        <Button size="small">Delete Account</Button>
+                                        <Button size="small" 
+                                        >Go to Account</Button>
+                                        <Button size="small"
+                                        onClick={() => deleteOneAccount(acc._id)}
+                                        >Delete Account</Button>
                                     </CardActions>
                                 </Card>
                             </Paper>

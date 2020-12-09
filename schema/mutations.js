@@ -3,6 +3,7 @@ const UserType = require('./types/user_type');
 const AuthService = require('../config/auth');
 const AccountType = require('./types/account_type');
 const requiresAuth = require('../config/permissions');
+const ObjectId = require('mongodb').ObjectID;
 
 const {
     GraphQLObjectType,
@@ -42,18 +43,36 @@ const mutation = new GraphQLObjectType({
                 name: { type: new GraphQLNonNull(GraphQLString) },
                 balance: { type: new GraphQLNonNull(GraphQLInt) },
             },
-            resolve: requiresAuth.createResolver(async(parentValue, args, request) => {
+            resolve: requiresAuth.createResolver(async (parentValue, args, request) => {
                 try {
-                    let account = await request.mongo.Accounts.insertOne({ name: args.name, balance: args.balance })
+                    let account = await request.mongo.Accounts.insertOne({ name: args.name, balance: args.balance });
                     let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: args.googleId }, { $push: { "accounts": account.insertedId } }, { new: true, upsert: true, returnOriginal: false })
-                    let data = updatedUser.value
+                    let data = updatedUser.value;
                     return { googleId: data.googleId, accounts: data.accounts };
-                } catch(err) {
+                } catch (err) {
                     return err;
                 }
-            // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })         
+                // let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: googleId }, { $set: { "accounts": updatedAccounts } }, { new: true, upsert: true, returnOriginal: false })         
             })
         },
+        DeleteAccount: {
+            type: UserType,
+            args: {
+                _id: { type: new GraphQLNonNull(GraphQLString) },
+                googleId: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: async (parentValue, args, request) => {
+                try {
+                    let acctObjId = ObjectId(args._id);
+                    let deletedAccount = await request.mongo.Accounts.findOneAndDelete({ _id: acctObjId });
+                    let updatedUser = await request.mongo.Users.findOneAndUpdate({ googleId: args.googleId }, { $pull: { "accounts": acctObjId } }, { new: true, upsert: true, returnOriginal: false })
+                    let data = updatedUser.value;
+                    return { accounts: data.accounts }
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+        }
     }
 });
 
