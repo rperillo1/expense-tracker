@@ -43,9 +43,15 @@ const RootQuery = new GraphQLObjectType({
         getOneAccount: {
             type: AccountType,
             args: { _id: {type: GraphQLString }},
-            resolve(parentValue, args, context) {
-                console.log("hitting that bitch", args)
-                return; 
+            resolve: async(parentValue, args, context) => {
+                try {
+                    let acctObjId = ObjectId(args._id);
+                    let account = await context.mongo.Accounts.findOne({ _id: acctObjId});
+                    return { _id: account._id, name: account.name, balance: account.balance };
+                } catch(err) {
+                    console.log(err)
+                }
+
             }
         }
     }

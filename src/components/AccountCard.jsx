@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import { AccountContext } from '../contexts/AccountContext';
-import { CurrentAccountContext } from '../contexts/CurrentAccountContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -43,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 function AccountCard({ deleteOneAccount, getOneAccount }) {
     const { user, setUser } = useContext(UserContext);
     const { accounts, setAccounts } = useContext(AccountContext);
-    const { currentAccount, setCurrentAccount } = useContext(CurrentAccountContext);
+
     const classes = useStyles();
     const history = useHistory()
 
@@ -74,9 +73,6 @@ function AccountCard({ deleteOneAccount, getOneAccount }) {
                                         </Typography>
                                     </CardContent>
                                     <CardActions className={classes.action}>
-                                        <Link to={{pathname: `/account/detail`, charId: `${acc._id}`}}>
-                                            Go To Account
-                                        </Link>
                                         <Button size="large"
                                             onClick={() => handleClick(acc._id)}
                                         >

@@ -7,6 +7,7 @@ import AccountDetailPage from './pages/AccountDetailPage';
 import { UserContext } from './contexts/UserContext';
 import { IsLoggedInContext } from './contexts/IsLoggedInContext';
 import { AccountContext } from './contexts/AccountContext';
+import { CurrentAccountContext } from './contexts/CurrentAccountContext';
 // import useToggle from './hooks/useToggleState';
 import tokenServices from './utils/tokenServices';
 import LoginMutation from './queries/LoginMutation';
@@ -26,6 +27,7 @@ function App(props) {
   const { isLoggedIn, toggleIsLoggedIn } = useContext(IsLoggedInContext);
   const { accounts, setAccounts } = useContext(AccountContext);
   const { user, setUser } = useContext(UserContext);
+  const { currentAccount, setCurrentAccount } = useContext(CurrentAccountContext);
   //Graphql mutations
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
@@ -46,11 +48,11 @@ function App(props) {
   })
   const [getOneAccountQuery, { loadingAcct, acctData }] = useLazyQuery(getAccountQuery, {
     onCompleted: (data) => {
-      console.log("completed GetOne Account", data)
+      setCurrentAccount(data.getOneAccount)
     }
   })
 
-  
+
   useEffect(() => {
     getUser();
   }, [])
