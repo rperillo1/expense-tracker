@@ -1,11 +1,11 @@
 import React from 'react';
 import { useEffect } from 'react';
 
-function AccountDetailPage({ getOneAccount }) {
+function AccountDetailPage({ }) {
 
     // useEffect(()=> {
-    //     getOneAccount()
-    // })
+
+    // }, [])
 
     return (
         <div>Account detail page</div>

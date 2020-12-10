@@ -44,7 +44,7 @@ const RootQuery = new GraphQLObjectType({
             type: AccountType,
             args: { _id: {type: GraphQLString }},
             resolve(parentValue, args, context) {
-                console.log("hitting that bitch")
+                console.log("hitting that bitch", args)
                 return; 
             }
         }

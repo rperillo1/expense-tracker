@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import { AccountContext } from '../contexts/AccountContext';
+import { CurrentAccountContext } from '../contexts/CurrentAccountContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -39,11 +40,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function AccountCard({ deleteOneAccount }) {
+function AccountCard({ deleteOneAccount, getOneAccount }) {
     const { user, setUser } = useContext(UserContext);
     const { accounts, setAccounts } = useContext(AccountContext);
+    const { currentAccount, setCurrentAccount } = useContext(CurrentAccountContext);
     const classes = useStyles();
+    const history = useHistory()
 
+    const handleClick = (acctId) => {
+        history.push('/account/detail')
+        getOneAccount(acctId);
+    }
+    
 
     return (
         <div className={classes.main}>
@@ -66,9 +74,14 @@ function AccountCard({ deleteOneAccount }) {
                                         </Typography>
                                     </CardContent>
                                     <CardActions className={classes.action}>
-                                        <Link to='/account/detail'>
+                                        <Link to={{pathname: `/account/detail`, charId: `${acc._id}`}}>
                                             Go To Account
                                         </Link>
+                                        <Button size="large"
+                                            onClick={() => handleClick(acc._id)}
+                                        >
+                                            VISIT ACCOUNT
+                                        </Button>
                                         <Button size="small"
                                             onClick={() => deleteOneAccount(acc._id)}>
                                             Delete Account

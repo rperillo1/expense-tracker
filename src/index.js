@@ -11,6 +11,7 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
+import { CurrentAccountProvider } from './contexts/CurrentAccountContext';
 
 
 const client = new ApolloClient({
@@ -25,7 +26,9 @@ ReactDOM.render(
         <IsLoggedInProvider>
         <UserProvider>
         <AccountProvider>
+        <CurrentAccountProvider>
             <App />
+        </CurrentAccountProvider>
         </AccountProvider>
         </UserProvider>
         </IsLoggedInProvider>

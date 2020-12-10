@@ -22,14 +22,15 @@ import './App.css';
 
 
 function App(props) {
+  //Contexts
   const { isLoggedIn, toggleIsLoggedIn } = useContext(IsLoggedInContext);
   const { accounts, setAccounts } = useContext(AccountContext);
-
   const { user, setUser } = useContext(UserContext);
+  //Graphql mutations
   const [LoginOrSignup] = useMutation(LoginMutation);
   const [AddAccount] = useMutation(AddAccountMutation);
   const [DeleteAccount] = useMutation(DeleteAccountMutation);
-
+  //Graphql queries
   const [getAccountsQuery, { loadingAccounts, accountData }] = useLazyQuery(getAccounts, {
     onCompleted: (data) => {
       let accts = data.getAccounts.accounts
@@ -45,10 +46,11 @@ function App(props) {
   })
   const [getOneAccountQuery, { loadingAcct, acctData }] = useLazyQuery(getAccountQuery, {
     onCompleted: (data) => {
-      console.log("completed GetOne Account")
+      console.log("completed GetOne Account", data)
     }
   })
 
+  
   useEffect(() => {
     getUser();
   }, [])
@@ -134,11 +136,11 @@ function App(props) {
             <AccountPage history={history}
               createAccount={createAccount}
               deleteOneAccount={deleteOneAccount}
+              getOneAccount={getOneAccount}
             />
           } />
-          <Route exact path='/account/detail' render={({ history }) => 
-            <AccountDetailPage history={history} 
-            getOneAccount={getOneAccount}
+          <Route exact path='/account/detail' render={({ history, location }) => 
+            <AccountDetailPage history={history} location={location}
             />
           }/>
           <Route path='/' render={({ history }) =>
